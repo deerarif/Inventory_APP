@@ -1,0 +1,7 @@
+@import "tailwindcss";
+html {
+  background-color: #121212;
+}
+.logincard {
+  font-weight: 1000;
+}
