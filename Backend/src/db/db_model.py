@@ -15,12 +15,13 @@ class User(Base):
     name = Column(String(250), nullable=False)
     passwd = Column(Integer, nullable=False)
 
-#Model for Inventory
-class Inventory(Base):
-    __tablename__ = 'inventory'
+#Model for Assets
+class Assets(Base):
+    __tablename__ = 'asset'
 
     Nama = Column(String(250), nullable=False)
     Desc = Column(Text)
+    Profile = Column(String())
     ID = Column(Integer,nullable=False, primary_key=True)
     Lokasi = Column(String(250))
     RAM = Column(Integer)
@@ -32,36 +33,36 @@ class Inventory(Base):
     Unit = Column(String(250))
     Dates = Column(Date)
     Status = Column(String(100), nullable=False)
-    Documents = relationship('Documents', back_populates='inventory')
-    Software = relationship('Software', back_populates='inventory')
-    Note = relationship('Note', back_populates='inventory', uselist=False)
+    Documents = relationship('Documents', back_populates='asset')
+    Software = relationship('Software', back_populates='asset')
+    Note = relationship('Note', back_populates='asset', uselist=False)
 
 #Model for Documents
 class Documents(Base):
     __tablename__ = 'documents'
 
     Documents_id = Column(Integer, primary_key=True, nullable=False)
-    Owner_id = Column(Integer, ForeignKey('inventory.ID'))
+    Owner_id = Column(Integer, ForeignKey('asset.ID'))
     Desc = Column(String(250), nullable=False)
     Path = Column(String(250), nullable=False)
     Doc_date = Column(DateTime, default=datetime.now)
-    inventory = relationship('Inventory', back_populates='Documents')
+    Assets = relationship('asset', back_populates='Documents')
 
 #Model for Software
 class Software(Base):
     __tablename__ = 'software'
 
     Software_id = Column(Integer, primary_key=True, nullable=False)
-    Owner_id = Column(Integer, ForeignKey('inventory.ID'))
+    Owner_id = Column(Integer, ForeignKey('asset.ID'))
     Software_username = Column(String(250), nullable=False)
     Software_passwd = Column(String(250), nullable=False)
-    inventory = relationship('Inventory', back_populates='Software')
+    Assets = relationship('asset', back_populates='Software')
 
 #Model for note or text
 class Note(Base):
     __tablename__ = 'note'
     Note_id = Column(Integer, primary_key=True, nullable=False)
-    Owner_id = Column(Integer, ForeignKey('inventory.ID'), unique=True)
+    Owner_id = Column(Integer, ForeignKey('asset.ID'), unique=True)
     Last_Maintenance = Column(Date, nullable=False,default=datetime.now)
     Notes = Column(Text)
-    inventory = relationship('Inventory', back_populates='Note')
+    Assets = relationship('asset', back_populates='Note')
