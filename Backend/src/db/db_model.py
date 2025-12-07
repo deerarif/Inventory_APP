@@ -1,5 +1,16 @@
 import os
-from sqlalchemy import create_engine, Column, Integer, String, Float, Date,ForeignKey, Interval,Text,DateTime
+from sqlalchemy import (
+    create_engine,
+    Column,
+    Integer,
+    String,
+    Float,
+    Date,
+    ForeignKey,
+    Interval,
+    Text,
+    DateTime,
+)
 from sqlalchemy.orm import sessionmaker, declarative_base, relationship
 from datetime import datetime
 
@@ -7,22 +18,24 @@ from datetime import datetime
 # This is the base class which our models will inherit from.
 Base = declarative_base()
 
-#Model for user
+
+# Model for user
 class User(Base):
-    __tablename__ = 'user'
+    __tablename__ = "user"
 
     id = Column(Integer, primary_key=True)
     name = Column(String(250), nullable=False)
     passwd = Column(Integer, nullable=False)
 
-#Model for Assets
+
+# Model for Assets
 class Assets(Base):
-    __tablename__ = 'asset'
+    __tablename__ = "asset"
 
     Nama = Column(String(250), nullable=False)
     Desc = Column(Text)
     Profile = Column(String())
-    ID = Column(Integer,nullable=False, primary_key=True)
+    ID = Column(Integer, nullable=False, primary_key=True)
     Lokasi = Column(String(250))
     RAM = Column(Integer)
     SSD = Column(Integer)
@@ -33,36 +46,39 @@ class Assets(Base):
     Unit = Column(String(250))
     Dates = Column(Date)
     Status = Column(String(100), nullable=False)
-    Documents = relationship('Documents', back_populates='asset')
-    Software = relationship('Software', back_populates='asset')
-    Note = relationship('Note', back_populates='asset', uselist=False)
+    Documents = relationship("Documents", back_populates="asset")
+    Software = relationship("Software", back_populates="asset")
+    Note = relationship("Note", back_populates="asset", uselist=False)
 
-#Model for Documents
+
+# Model for Documents
 class Documents(Base):
-    __tablename__ = 'documents'
+    __tablename__ = "documents"
 
     Documents_id = Column(Integer, primary_key=True, nullable=False)
-    Owner_id = Column(Integer, ForeignKey('asset.ID'))
+    Owner_id = Column(Integer, ForeignKey("asset.ID"))
     Desc = Column(String(250), nullable=False)
     Path = Column(String(250), nullable=False)
     Doc_date = Column(DateTime, default=datetime.now)
-    Assets = relationship('asset', back_populates='Documents')
+    asset = relationship("Assets", back_populates="Documents")
 
-#Model for Software
+
+# Model for Software
 class Software(Base):
-    __tablename__ = 'software'
+    __tablename__ = "software"
 
     Software_id = Column(Integer, primary_key=True, nullable=False)
-    Owner_id = Column(Integer, ForeignKey('asset.ID'))
+    Owner_id = Column(Integer, ForeignKey("asset.ID"))
     Software_username = Column(String(250), nullable=False)
     Software_passwd = Column(String(250), nullable=False)
-    Assets = relationship('asset', back_populates='Software')
+    asset = relationship("Assets", back_populates="Software")
 
-#Model for note or text
+
+# Model for note or text
 class Note(Base):
-    __tablename__ = 'note'
+    __tablename__ = "note"
     Note_id = Column(Integer, primary_key=True, nullable=False)
-    Owner_id = Column(Integer, ForeignKey('asset.ID'), unique=True)
-    Last_Maintenance = Column(Date, nullable=False,default=datetime.now)
+    Owner_id = Column(Integer, ForeignKey("asset.ID"), unique=True)
+    Last_Maintenance = Column(Date, nullable=False, default=datetime.now)
     Notes = Column(Text)
-    Assets = relationship('asset', back_populates='Note')
+    asset = relationship("Assets", back_populates="Note")

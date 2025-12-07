@@ -14,8 +14,8 @@ function App() {
   return (
     <>
       {/* <LOGINPAGE /> */}
-      <DISPLAY />
       <SIDEBAR />
+      <INVENTROY />
     </>
   );
 }
