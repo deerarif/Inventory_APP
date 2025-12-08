@@ -34,8 +34,8 @@ class Assets(Base):
 
     Nama = Column(String(250), nullable=False)
     Desc = Column(Text)
-    Profile = Column(String())
-    ID = Column(Integer, nullable=False, primary_key=True)
+    Profile = Column(String(255))
+    ID = Column(String(50), nullable=False, primary_key=True)
     Lokasi = Column(String(250))
     RAM = Column(Integer)
     SSD = Column(Integer)
@@ -56,7 +56,7 @@ class Documents(Base):
     __tablename__ = "documents"
 
     Documents_id = Column(Integer, primary_key=True, nullable=False)
-    Owner_id = Column(Integer, ForeignKey("asset.ID"))
+    Owner_id = Column(String(255), ForeignKey("asset.ID"))
     Desc = Column(String(250), nullable=False)
     Path = Column(String(250), nullable=False)
     Doc_date = Column(DateTime, default=datetime.now)
@@ -68,7 +68,7 @@ class Software(Base):
     __tablename__ = "software"
 
     Software_id = Column(Integer, primary_key=True, nullable=False)
-    Owner_id = Column(Integer, ForeignKey("asset.ID"))
+    Owner_id = Column(String(255), ForeignKey("asset.ID"))
     Software_username = Column(String(250), nullable=False)
     Software_passwd = Column(String(250), nullable=False)
     asset = relationship("Assets", back_populates="Software")
@@ -78,7 +78,7 @@ class Software(Base):
 class Note(Base):
     __tablename__ = "note"
     Note_id = Column(Integer, primary_key=True, nullable=False)
-    Owner_id = Column(Integer, ForeignKey("asset.ID"), unique=True)
+    Owner_id = Column(String(255), ForeignKey("asset.ID"), unique=True)
     Last_Maintenance = Column(Date, nullable=False, default=datetime.now)
     Notes = Column(Text)
     asset = relationship("Assets", back_populates="Note")

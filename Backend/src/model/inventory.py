@@ -7,6 +7,10 @@ from db.connection import db_session
 from datetime import datetime
 
 
+def datetime_to_string(dt: datetime) -> str:
+    return dt.strftime("%d-%m-%Y")
+
+
 # data procession function
 def process_data(data):
     data_clean = [
@@ -25,6 +29,15 @@ def process_data(data):
             "Unit": result.Unit,
             "Dates": result.Dates,
             "Status": result.Status,
+            "Docs": [
+                (
+                    docs.Documents_id,
+                    docs.Desc,
+                    docs.Path,
+                    datetime_to_string(docs.Doc_date),
+                )
+                for docs in result.Documents
+            ],
         }
         for result in data
     ]
@@ -61,3 +74,10 @@ def add_inv(data):
     )
     db_session.add(add_data)
     db_session.commit()
+
+
+# edit inventory
+
+
+def update_inv(data):
+    pass
