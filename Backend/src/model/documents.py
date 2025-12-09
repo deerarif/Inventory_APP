@@ -1,4 +1,4 @@
-from sqlalchemy import select
+from sqlalchemy import select, delete
 from db.connection import db_session
 from db.db_model import Documents
 
@@ -26,5 +26,9 @@ def add_docs(data):
 
 
 # remove documents from database
-def rem_docs(num_id):
-    pass
+def rem_docs(num_id, Asset_ID):
+    stmt = delete(Documents).where(
+        Documents.Documents_id == num_id and Documents.Owner_id == Asset_ID
+    )
+    db_session.execute(stmt)
+    db_session.commit()
