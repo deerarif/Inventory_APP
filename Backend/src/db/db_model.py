@@ -69,6 +69,7 @@ class Software(Base):
 
     Software_id = Column(Integer, primary_key=True, nullable=False)
     Owner_id = Column(String(255), ForeignKey("asset.ID"))
+    Soft_name = Column(String(240), nullable=False)
     Software_username = Column(String(250), nullable=False)
     Software_passwd = Column(String(250), nullable=False)
     asset = relationship("Assets", back_populates="Software")

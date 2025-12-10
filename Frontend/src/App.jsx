@@ -15,7 +15,7 @@ function App() {
     <>
       {/* <LOGINPAGE /> */}
       <SIDEBAR />
-      <INVENTROY />
+      <DISPLAY />
     </>
   );
 }

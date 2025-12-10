@@ -86,6 +86,7 @@ def retrive_one(inv_id):
                         )
                         for docs in result.Documents
                     ],
+                    # Add more data software and Note, this data will use in menu inventory
                 }
             )
     except:

@@ -4,8 +4,6 @@ from db.db_model import Documents
 
 
 # function get docs base on asset id
-
-
 def retrive_docs(num_id):
     result = db_session.execute(
         select(Documents.Documents_id, Documents.Desc, Documents.Path).where(

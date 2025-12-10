@@ -3,3 +3,5 @@ Backend/lib*
 *__pycache__*
 */.env
 Backend/bin
+__pycache__
+__init__.py
