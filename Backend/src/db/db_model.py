@@ -46,9 +46,25 @@ class Assets(Base):
     Unit = Column(String(250))
     Dates = Column(Date)
     Status = Column(String(100), nullable=False)
-    Documents = relationship("Documents", back_populates="asset")
-    Software = relationship("Software", back_populates="asset")
-    Note = relationship("Note", back_populates="asset", uselist=False)
+    Documents = relationship(
+        "Documents",
+        back_populates="asset",
+        cascade="all, delete-orphan",  # remove children on delete
+        passive_deletes=True,
+    )
+    Software = relationship(
+        "Software",
+        back_populates="asset",
+        cascade="all, delete-orphan",  # remove children on delete
+        passive_deletes=True,
+    )
+    Note = relationship(
+        "Note",
+        back_populates="asset",
+        # uselist=False,
+        cascade="all, delete-orphan",
+        passive_deletes=True,
+    )
 
 
 # Model for Documents
@@ -56,7 +72,9 @@ class Documents(Base):
     __tablename__ = "documents"
 
     Documents_id = Column(Integer, primary_key=True, nullable=False)
-    Owner_id = Column(String(255), ForeignKey("asset.ID"))
+    Owner_id = Column(
+        String(255), ForeignKey("asset.ID", ondelete="CASCADE", onupdate="CASCADE")
+    )
     Desc = Column(String(250), nullable=False)
     Path = Column(String(250), nullable=False)
     Doc_date = Column(DateTime, default=datetime.now)
@@ -68,7 +86,9 @@ class Software(Base):
     __tablename__ = "software"
 
     Software_id = Column(Integer, primary_key=True, nullable=False)
-    Owner_id = Column(String(255), ForeignKey("asset.ID"))
+    Owner_id = Column(
+        String(255), ForeignKey("asset.ID", ondelete="CASCADE", onupdate="CASCADE")
+    )
     Soft_name = Column(String(240), nullable=False)
     Software_username = Column(String(250), nullable=False)
     Software_passwd = Column(String(250), nullable=False)
@@ -79,7 +99,11 @@ class Software(Base):
 class Note(Base):
     __tablename__ = "note"
     Note_id = Column(Integer, primary_key=True, nullable=False)
-    Owner_id = Column(String(255), ForeignKey("asset.ID"), unique=True)
+    Owner_id = Column(
+        String(255),
+        ForeignKey("asset.ID", ondelete="CASCADE", onupdate="CASCADE"),
+        unique=True,
+    )
     Last_Maintenance = Column(Date, nullable=False, default=datetime.now)
     Notes = Column(Text)
     asset = relationship("Assets", back_populates="Note")
