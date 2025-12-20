@@ -30,7 +30,7 @@ data = {
 }
 # Owner_id=data["Label_Barcode"], Desc=data["Deskripsi"], Path=data["Path"]
 data_docs = {
-    "Label_Barcode": "00000",
+    "Label_Barcode": "123",
     "Deskripsi": "Serah Terima",
     "Path": "google.com",
 }
@@ -41,7 +41,7 @@ data_soft = {
     "Username": "google.com",
     "Password": "google.com",
 }
-# add_docs(data_docs)
+add_docs(data_docs)
 # print(os.getenv("TEST"))
 # retrive_all()
 # rem_docs(1, "7812632")
@@ -52,4 +52,4 @@ data_soft = {
 # add_soft(data_soft)
 # retrive_soft("00000")
 # rem_soft(1, "2222222")
-del_inv("00000")
+# del_inv("00000")
