@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ADDNEWDOCS from "./newdocs";
+
 import {
   faAngleDown,
   faSort,
@@ -7,11 +8,22 @@ import {
   faFileCirclePlus,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-function THETABLE() {
-  const [DocumtstablesState, setDocumtstablesState] = useState("");
+import { data } from "react-router-dom";
+function THETABLE(props) {
+  const [openRow, setOpenRow] = useState(null);
   const [Documtsaddnew, setDocumtsaddnew] = useState("");
+  const [AddnewdocState, setAddnewdocState] = useState();
+  const [DocsDataID, setDocsDataID] = useState();
+  function formatDateToDDMMYYYY(dateStr) {
+    const date = new Date(dateStr);
+    const day = String(date.getUTCDate()).padStart(2, "0");
+    const month = String(date.getUTCMonth() + 1).padStart(2, "0");
+    const year = date.getUTCFullYear();
+
+    return `${day}-${month}-${year}`;
+  }
   return (
-    <div className="absolute inset-0 text-[0.8rem] text-neutral-50 font-mono font-medium top-20 left-15 right-5 overflow-visible">
+    <div className="absolute inset-0 text-[0.8rem] text-neutral-50 font-mono font-medium top-17 p-2 overflow-visible">
       <div className={Documtsaddnew ? "" : "hidden"}>
         <ADDNEWDOCS nowstate={Documtsaddnew} onupdate={setDocumtsaddnew} />
       </div>
@@ -89,118 +101,91 @@ function THETABLE() {
             Tahun Pengadaan
           </th>
         </tr>
-        <tr className="h-9 border-y-1 border-amber-50 hover:bg-gray-950">
-          <td></td>
-          <td>987139</td>
-          <td>Lantai 1 Gudang Farmasi</td>
-          <td>Farmasi</td>
-          <td>John Doe</td>
-          <td>192.168.1.20</td>
-          <td>
-            {" "}
-            <div className=" category h-5 w-15 text-center content-center rounded-2xl bg-green-500 hover:bg-green-700">
-              <span>Aktif</span>
-            </div>
-          </td>
-          <td>Lenovo Idepad 15</td>
-          <td>Laptop Gaming</td>
-          <td className="">
-            <div className="flex basis-100">
-              <span
-                className="basis-50"
-                onClick={() => {
-                  DocumtstablesState == ""
-                    ? setDocumtstablesState("hidden")
-                    : setDocumtstablesState("");
-                }}
-              >
-                <FontAwesomeIcon
-                  icon={faAngleDown}
-                  className="hover:text-gray-200"
-                />
-              </span>
-              <span
-                className="basis-50"
-                onClick={() => {
-                  DocumtstablesState == ""
-                    ? setDocumtsaddnew("hidden")
-                    : setDocumtsaddnew("");
-                }}
-              >
-                <FontAwesomeIcon
-                  icon={faFileCirclePlus}
-                  className="hover:text-gray-200"
-                />
-              </span>
-            </div>
-          </td>
-          <td>20 January 2024</td>
-        </tr>
-        <tbody className={DocumtstablesState ? " text-gray-500" : "hidden"}>
-          {Array.from({ length: 4 }, (_, i) => (
-            <tr className="bg-gray-800 hover:bg-gray-900 font-light italic h-8">
-              <td className="pl-15" colSpan={2}>
-                {i + 1}
-              </td>
-              <td colSpan={3}>Serah terima</td>
-              <td colSpan={4}>
-                <a
-                  href="https://www.soundczech.cz/temp/lorem-ipsum.pdf"
-                  className=" hover:text-blue-500"
-                  target="_blank"
+        {props.inv_data
+          ? props.inv_data.map((data) => (
+              <React.Fragment key={data.ID}>
+                <tr className="h-9 border-y-1 border-amber-50 hover:bg-gray-950">
+                  <td></td>
+                  <td>{data.ID}</td>
+                  <td>{data.Lokasi}</td>
+                  <td>{data.Unit}</td>
+                  <td>{data.User}</td>
+                  <td>{data.IP}</td>
+                  <td>
+                    <div className="category h-5 w-15 text-center content-center rounded-2xl bg-green-500 hover:bg-green-700">
+                      <span>{data.Status}</span>
+                    </div>
+                  </td>
+                  <td>{data.Nama}</td>
+                  <td>{data.Desc}</td>
+                  <td>
+                    <div className="flex basis-100">
+                      <span
+                        className="basis-50 pl-5"
+                        onClick={() =>
+                          setOpenRow(openRow === data.ID ? null : data.ID)
+                        }
+                      >
+                        <FontAwesomeIcon icon={faAngleDown} />
+                      </span>
+                      <span
+                        className="basis-50"
+                        onClick={() => {
+                          setDocsDataID(data.ID);
+                          setAddnewdocState(true);
+                        }}
+                      >
+                        <FontAwesomeIcon icon={faFileCirclePlus} />
+                      </span>
+                    </div>
+                  </td>
+                  <td>{formatDateToDDMMYYYY(data.Dates)}</td>
+                </tr>
+
+                <tbody
+                  key={`docs-${data.ID}`}
+                  className={openRow === data.ID ? "text-gray-500" : "hidden"}
                 >
-                  https://www.soundczech.cz/temp/lorem-ipsum.pdf
-                </a>
-              </td>
-              <td colSpan={1}>
-                <FontAwesomeIcon
-                  icon={faFileDownload}
-                  className="hover:text-gray-200 text-sm"
-                />
-              </td>
-              <td colSpan={1}>31 January 2024</td>
-            </tr>
-          ))}
-        </tbody>
-        {Array.from({ length: 30 }, (_, i) => (
-          <tr
-            className="h-9 border-y-1 border-amber-50 hover:bg-gray-950"
-            key={i + 1}
-          >
-            <td></td>
-            <td>{(987139 + i) * 7 - 5}</td>
-            <td>Lantai 1 Gudang Farmasi</td>
-            <td>Farmasi</td>
-            <td>John Doe</td>
-            <td>192.168.1.{i + 1}</td>
-            <td>
-              {" "}
-              <div className=" category h-5 w-15 text-center content-center rounded-2xl bg-green-500 hover:bg-green-700">
-                <span>Aktif</span>
-              </div>
-            </td>
-            <td>Lenovo Idepad 15</td>
-            <td>Laptop Gaming</td>
-            <td className="">
-              <div className="flex basis-100">
-                <span className="basis-50">
-                  <FontAwesomeIcon
-                    icon={faAngleDown}
-                    className="hover:text-gray-200"
-                  />
-                </span>
-                <span className="basis-50">
-                  <FontAwesomeIcon
-                    icon={faFileCirclePlus}
-                    className="hover:text-gray-200"
-                  />
-                </span>
-              </div>
-            </td>
-            <td>20 January 2024</td>
-          </tr>
-        ))}
+                  {data.Docs.map((docs, index) => (
+                    <tr
+                      key={`${data.ID}-${index}`}
+                      className="bg-gray-800 hover:bg-gray-900 font-light italic h-8"
+                    >
+                      <td className="pl-15" colSpan={2}>
+                        {index + 1}
+                      </td>
+                      <td colSpan={3}>{docs[1]}</td>
+                      <td colSpan={4}>
+                        <a
+                          href={
+                            "http://localhost:8990/docs/" +
+                            data.ID +
+                            "/" +
+                            docs[2]
+                          }
+                          className="hover:text-blue-500"
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          {docs[2]}
+                        </a>
+                      </td>
+                      <td colSpan={1}>
+                        <FontAwesomeIcon icon={faFileDownload} />
+                      </td>
+                      <td colSpan={1}>{docs[3]}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </React.Fragment>
+            ))
+          : null}
       </table>
+      {AddnewdocState ? (
+        <ADDNEWDOCS state={setAddnewdocState} dataID={DocsDataID} />
+      ) : (
+        ""
+      )}
     </div>
   );
 }

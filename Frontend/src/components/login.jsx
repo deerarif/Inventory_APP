@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 function LoginPage() {
   return (
     <>
-      <div className="pallete absolute inset-0 flex justify-center items-center mb-40">
+      <div className="pallete absolute inset-0 flex justify-center items-center mb-40 ml-13">
         <div className="flex flex-col gap-8 items-center relative pb-20">
           <span className="logincard text-3xl text-purple-300">LOGIN</span>
           <form

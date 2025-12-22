@@ -1,6 +1,7 @@
 import sys, os
 from datetime import datetime
 from dotenv import load_dotenv
+from random import randint
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
@@ -28,20 +29,50 @@ data = {
     "Status": "Active",
     "Dates": "25-12-2025",
 }
-# Owner_id=data["Label_Barcode"], Desc=data["Deskripsi"], Path=data["Path"]
-data_docs = {
-    "Label_Barcode": "123",
-    "Deskripsi": "Serah Terima",
-    "Path": "google.com",
-}
 
-data_soft = {
-    "ID": "00000",
-    "Name": "Serah Terima",
-    "Username": "google.com",
-    "Password": "google.com",
-}
-add_docs(data_docs)
+
+def make_fake_data(labels):
+    data = {
+        "Nama": "Komputer AIO Asus i5",
+        "Desc": "Lorem Ipsum dolor siamet",
+        "Profile": f"\\var\\www\\{labels}\\Profile.jpg",
+        "ID": f"{labels}",
+        "Lokasi": "RPU",
+        "RAM": 16,
+        "SSD": 512,
+        "Mobo": "Ausurix v112-obvg",
+        "IP": f"192.168.0.{labels}",
+        "KIS": "LKJHFDA-ASDNKASD-SDHKAD",
+        "User": "Manrgaret Sunson",
+        "Unit": "SIMRS",
+        "Status": "Active",
+        "Dates": "25-12-2025",
+    }
+    data_docs = {
+        "Label_Barcode": f"{labels}",
+        "Deskripsi": "Serah Terima",
+        "Path": "google.com",
+    }
+    data_soft = {
+        "ID": f"{labels}",
+        "Name": "Serah Terima",
+        "Username": "google.com",
+        "Password": "google.com",
+    }
+    return [data, data_docs, data_soft]
+
+
+# for i in range(1, 100):
+#     data = make_fake_data(
+#         randint(
+#             1000000,
+#             9999999,
+#         )
+#     )
+#     add_inv(data[0])
+#     add_docs(data[1])
+#     add_soft(data[2])
+# add_docs(data_docs)
 # print(os.getenv("TEST"))
 # retrive_all()
 # rem_docs(1, "7812632")

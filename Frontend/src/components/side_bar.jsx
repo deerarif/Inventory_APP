@@ -5,29 +5,64 @@ import {
   faRightFromBracket,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 function SideBar() {
+  const [Menu, setMenu] = useState();
+  const navigate = useNavigate();
+
   return (
     <div className="bar fixed left-0 bg-gray-950 h-dvh w-13 justify-center content-center">
       <div className="menu flex flex-col gap-5 text-purple-300 font-extrabold cursor-default">
-        <div className="addinv size-13 content-center text-center border-y-2">
+        <div
+          className={
+            Menu === "addinv"
+              ? "addinv size-13 content-center text-center border-y-2"
+              : "addinv size-13 content-center text-center "
+          }
+        >
           <FontAwesomeIcon
             icon={faFileCirclePlus}
             size="xl"
             className="hover:text-purple-400"
+            onClick={() => {
+              navigate("/add_inv");
+              setMenu("addinv");
+            }}
           />
         </div>
-        <div className="dashboard size-13 content-center text-center">
+        <div
+          className={
+            Menu === "dashboard"
+              ? "dashboard size-13 content-center text-center border-y-2"
+              : "dashboard size-13 content-center text-center "
+          }
+        >
           <FontAwesomeIcon
             icon={faChartPie}
             size="xl"
             className="hover:text-purple-400"
+            onClick={() => {
+              navigate("/dashboard");
+              setMenu("dashboard");
+            }}
           />
         </div>
-        <div className="inventory size-13 content-center text-center">
+        <div
+          className={
+            Menu === "asset"
+              ? "assset size-13 content-center text-center border-y-2"
+              : "assset size-13 content-center text-center "
+          }
+        >
           <FontAwesomeIcon
             icon={faDesktop}
             size="xl"
             className="hover:text-purple-400"
+            onClick={() => {
+              navigate("/");
+              setMenu("asset");
+            }}
           />
         </div>
       </div>
@@ -36,6 +71,10 @@ function SideBar() {
           icon={faRightFromBracket}
           size="xl"
           className="hover:text-purple-400"
+          onClick={() => {
+            navigate("/login");
+            setMenu(null);
+          }}
         />
       </div>
     </div>

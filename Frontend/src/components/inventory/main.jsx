@@ -4,18 +4,46 @@ import {
   faPlusCircle,
   faBox,
 } from "@fortawesome/free-solid-svg-icons";
+import ADDNEWDOCS from "./newdocs";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import THETABLE from "./table";
 function INVENTROY() {
+  const [Inventory_data, setInventory_data] = useState();
+  async function fetchdata() {
+    await axios
+      .get("http://localhost:8990/API/inventory/")
+      .then((res) => {
+        setInventory_data(res.data);
+      })
+      .catch((err) => console.log(err));
+  }
+  const loadData = async () => {
+    try {
+      await fetchdata();
+    } catch (err) {
+      console.error(err);
+    }
+  };
+  useEffect(() => {
+    loadData();
+  }, []);
   return (
     <>
-      <div className="absolute inset-0 text-[0.8rem] text-neutral-50 font-mono font-medium">
-        <div className="navbar h-15 w-auto content-center  left-15">
-          <div className="flex flex-row b items-center top-5 gap-x-2 absolute left-15 cursor-default">
-            <div className=" category h-8 w-25 text-center content-center rounded-2xl bg-green-500 hover:bg-green-700">
+      <div className="absolute inset-0 text-[0.8rem] text-neutral-50 font-mono font-medium ml-13">
+        <div className="navbar h-15 w-auto content-center">
+          <div className="flex flex-row b items-center top-5 gap-x-2 absolute left-3 cursor-default">
+            <div
+              className=" category h-8 w-25 text-center content-center rounded-2xl bg-green-500 hover:bg-green-700"
+              onClick={() => setInventory_data("")}
+            >
               <span>Aktif 190</span>
             </div>
-            <div className="tools h-8 w-30 bg-pink-400 hover:bg-pink-700 text-center content-center rounded-[25px]">
+            <div
+              className="tools h-8 w-30 bg-pink-400 hover:bg-pink-700 text-center content-center rounded-[25px]"
+              onClick={() => loadData()}
+            >
               <span>Non Aktif 220</span>
             </div>
             <div className="tools h-8 w-29 bg-blue-400 hover:bg-blue-700 text-center content-center rounded-[25px]">
@@ -65,7 +93,7 @@ function INVENTROY() {
             </div>
           </div>
         </div>
-        <THETABLE />
+        <THETABLE inv_data={Inventory_data} />
       </div>
     </>
   );

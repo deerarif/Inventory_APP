@@ -2,9 +2,16 @@ from flask import Flask, request, jsonify
 from model.documents import retrive_docs, add_docs, rem_docs
 from model.inventory import retrive_all, add_inv, update_inv, retrive_one, del_inv
 from model.software import retrive_soft, add_soft, rem_soft
+import os
+from datetime import datetime
+from flask_cors import CORS, cross_origin
+from dotenv import load_dotenv
+from werkzeug.utils import secure_filename
 
-app = Flask(__name__)
-
+load_dotenv()
+app = Flask(__name__, static_folder=os.getenv("UPLOAD_FOLDER"), static_url_path="/docs")
+app.config["UPLOAD_FOLDER"] = os.getenv("UPLOAD_FOLDER")
+CORS(app)
 # Statics Route
 
 
@@ -52,14 +59,29 @@ def inventory_del(inv_id):
 
 
 # Route to control about documents
-
-
 @app.route("/API/documents/", methods=["POST"])
 def documents_add():
     try:
         data_docs = request.get_json()
         add_docs(data_docs)
         return "succes\n", 200
+    except Exception as err:
+        print(err)
+        return "error\n", 500
+
+
+@app.route("/API/upload/<string:inv_id>", methods=["POST"])
+def documents_files(inv_id):
+    try:
+        file = request.files["Documents"]
+        filename = f'{datetime.now().strftime("%Y-%m-%d_%H-%M-%S")}_' + secure_filename(
+            file.filename
+        )
+        path_folder = os.path.join(app.config["UPLOAD_FOLDER"] + inv_id)
+        if not os.path.exists(path_folder):
+            os.makedirs(path_folder)
+        file.save(os.path.join(path_folder, filename))
+        return filename, 200
     except Exception as err:
         print(err)
         return "error\n", 500
