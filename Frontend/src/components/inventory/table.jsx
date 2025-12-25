@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import ADDNEWDOCS from "./newdocs";
-
+import { useNavigate } from "react-router-dom";
 import {
   faAngleDown,
   faSort,
@@ -14,6 +14,21 @@ function THETABLE(props) {
   const [Documtsaddnew, setDocumtsaddnew] = useState("");
   const [AddnewdocState, setAddnewdocState] = useState();
   const [DocsDataID, setDocsDataID] = useState();
+  const navigate = useNavigate();
+
+  function StatusColor(data_status) {
+    const data_color = {
+      Active: "bg-green-500",
+      Tidak_Aktif: "bg-pink-400",
+      Perbaikan: "bg-blue-400",
+      Rusak: "bg-red-400",
+      Musnah: "bg-gray-400",
+      Tidak_digunakan: "bg-orange-300",
+    };
+    if (data_status) {
+      return data_color[data_status];
+    }
+  }
   function formatDateToDDMMYYYY(dateStr) {
     const date = new Date(dateStr);
     const day = String(date.getUTCDate()).padStart(2, "0");
@@ -106,13 +121,26 @@ function THETABLE(props) {
               <React.Fragment key={data.ID}>
                 <tr className="h-9 border-y-1 border-amber-50 hover:bg-gray-950">
                   <td></td>
-                  <td>{data.ID}</td>
+                  <td onClick={() => navigate("/detail/" + data.ID)}>
+                    {data.ID}
+                  </td>
                   <td>{data.Lokasi}</td>
                   <td>{data.Unit}</td>
                   <td>{data.User}</td>
-                  <td>{data.IP}</td>
+                  <td
+                    onClick={() => {
+                      // console.log("click");
+                      props.setReloadtry(true);
+                    }}
+                  >
+                    {data.IP}
+                  </td>
                   <td>
-                    <div className="category h-5 w-15 text-center content-center rounded-2xl bg-green-500 hover:bg-green-700">
+                    <div
+                      className={`category h-5 w-fit px-1 text-center content-center rounded-2xl ${StatusColor(
+                        data.Status
+                      )}`}
+                    >
                       <span>{data.Status}</span>
                     </div>
                   </td>
@@ -182,7 +210,11 @@ function THETABLE(props) {
           : null}
       </table>
       {AddnewdocState ? (
-        <ADDNEWDOCS state={setAddnewdocState} dataID={DocsDataID} />
+        <ADDNEWDOCS
+          state={setAddnewdocState}
+          setReloadtry={(meh) => props.setReloadtry(meh)}
+          dataID={DocsDataID}
+        />
       ) : (
         ""
       )}

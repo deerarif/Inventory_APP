@@ -91,8 +91,10 @@ function ADDNEWDOCS(props) {
                   alert("Data Tidak lengkap");
                   return;
                 }
-                sendDataDocs(props.dataID, message, file.name);
-                props.state(false);
+                sendDataDocs(props.dataID, message, file.name).then(() => {
+                  props.state(false);
+                  props.setReloadtry(true);
+                });
               }}
             >
               SUBMIT

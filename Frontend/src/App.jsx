@@ -18,7 +18,7 @@ function App() {
           <Route path="/dashboard" element={<DASHBOARD />} />
           <Route path="/login" element={<LOGINPAGE />} />
           <Route path="/add_inv" element={<ADDNEWDEVICE />} />
-          <Route path="/detail" element={<DISPLAY />} />
+          <Route path="/detail/:id" element={<DISPLAY />} />
         </Routes>
       </BrowserRouter>
     </>

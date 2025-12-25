@@ -20,9 +20,12 @@ def process_data(data):
             "Desc": result.Desc,
             "Profile": result.Profile,
             "ID": result.ID,
+            "Searial_Num": result.Searial_Num,
             "Lokasi": result.Lokasi,
+            "CPU": result.CPU,
             "RAM": result.RAM,
             "SSD": result.SSD,
+            "HDD": result.HDD,
             "Mobo": result.Mobo,
             "IP": result.IP,
             "KIS": result.KIS,
@@ -67,9 +70,12 @@ def retrive_one(inv_id):
                 "Desc": result.Desc,
                 "Profile": result.Profile,
                 "ID": result.ID,
+                "Searial_Num": result.Searial_Num,
                 "Lokasi": result.Lokasi,
+                "CPU": result.CPU,
                 "RAM": result.RAM,
                 "SSD": result.SSD,
+                "HDD": result.HDD,
                 "Mobo": result.Mobo,
                 "IP": result.IP,
                 "KIS": result.KIS,
@@ -96,6 +102,7 @@ def retrive_one(inv_id):
                     for soft in result.Software
                 ],
                 # Add more data software and Note, this data will use in menu inventory
+                "Note": [(note.Last_Maintenance,) for note in result.Note],
             }
             return data
     except:
@@ -108,9 +115,12 @@ def add_inv(data):
         Desc=data["Desc"],
         Profile=data["Profile"],
         ID=data["ID"],
+        Searial_Num=data["Searial_Num"],
         Lokasi=data["Lokasi"],
+        CPU=data["CPU"],
         RAM=data["RAM"],
         SSD=data["SSD"],
+        HDD=data["HDD"],
         Mobo=data["Mobo"],
         IP=data["IP"],
         KIS=data["KIS"],

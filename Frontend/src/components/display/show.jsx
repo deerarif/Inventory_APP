@@ -1,6 +1,31 @@
 import EDITDATA from "./editdata";
 import EDITSOFTWARE from "./edit_software";
+import { useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 function DISPLAY(props) {
+  const { id } = useParams();
+  const [DataInventory, setDataInventory] = useState();
+  const [Editdata, setEditdata] = useState();
+  const [EditSoft, setEditSoft] = useState();
+  const [Reload, setReload] = useState();
+  const navigate = useNavigate();
+  useEffect(() => {
+    const fetchdata = async (ids) => {
+      try {
+        const res = await axios.get(
+          "http://localhost:8990/API/inventory/" + ids
+        );
+        if (res.status === 200) {
+          setDataInventory(res.data);
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchdata(id);
+  }, [Reload]);
   return (
     <>
       {/* <EDITSOFTWARE /> */}
@@ -14,13 +39,10 @@ function DISPLAY(props) {
           </div>
           <div className="w-full rounded-sm flex flex-col">
             <span className=" text-white font-extrabold text-2xl">
-              Lenovo Thinkpad T40
+              {DataInventory ? DataInventory.Nama : ""}
             </span>
             <span className=" font-medium text-gray-400 w-200 text-justify border-y-3 border-amber-50/1">
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sapiente
-              illum molestiae laboriosam cumque aliquam tempore, inventore nam
-              provident enim vero quas, dignissimos ratione corrupti. Temporibus
-              nobis similique enim esse accusantium.
+              {DataInventory ? DataInventory.Desc : ""}
             </span>
             <div className="tabel">
               <table className=" font-light w-[50%] border-separate border-spacing-1">
@@ -29,145 +51,135 @@ function DISPLAY(props) {
                 </tr>
                 <tr>
                   <td className="font-semibold">Seri</td>
-                  <td>90821HKJASD23</td>
+                  <td>{DataInventory ? DataInventory.Nama : ""}</td>
                 </tr>
                 <tr>
                   <td className="font-semibold">No. Barcode</td>
-                  <td>219383</td>
+                  <td>{id}</td>
                 </tr>
                 <tr>
                   <td className="font-semibold">Lokasi</td>
-                  <td>Lantai 4 Nurse Station RPU</td>
+                  <td>{DataInventory ? DataInventory.Lokasi : ""}</td>
                 </tr>
                 <tr>
                   <td className="font-semibold">Processor</td>
-                  <td>Intel Core i7 3770X</td>
+                  <td>{DataInventory ? DataInventory.CPU : ""}</td>
                 </tr>
                 <tr>
                   <td className="font-semibold">RAM</td>
-                  <td>16GB DDR4</td>
+                  <td>{DataInventory ? DataInventory.RAM : ""}</td>
                 </tr>
                 <tr>
                   <td className="font-semibold">SSD</td>
-                  <td>500GB</td>
+                  <td>{DataInventory ? DataInventory.SSD : ""}</td>
                 </tr>
                 <tr>
                   <td className="font-semibold">HDD</td>
-                  <td>NONE</td>
+                  <td>{DataInventory ? DataInventory.HDD : "-"}</td>
                 </tr>
                 <tr>
                   <td className="font-semibold">Motherboard</td>
-                  <td>-</td>
+                  <td>{DataInventory ? DataInventory.Mobo : ""}</td>
                 </tr>
                 <tr>
                   <td className="font-semibold">IP Address</td>
-                  <td>192.168.1.190</td>
+                  <td>{DataInventory ? DataInventory.IP : ""}</td>
                 </tr>
 
                 <tr>
                   <td className="font-semibold">KIS Code</td>
-                  <td>KJHAFS9124JKE82F</td>
+                  <td>{DataInventory ? DataInventory.KIS : ""}</td>
                 </tr>
                 <tr>
                   <td className="font-semibold">User</td>
-                  <td>Santo Curious</td>
+                  <td>{DataInventory ? DataInventory.User : ""}</td>
                 </tr>
                 <tr>
                   <td className="font-semibold">Unit</td>
-                  <td>Keperawatan</td>
+                  <td>{DataInventory ? DataInventory.Unit : ""}</td>
                 </tr>
                 <tr>
                   <td className="font-semibold">Tahun Pengadaan</td>
-                  <td>25 Juni 2029</td>
+                  <td>{DataInventory ? DataInventory.Dates : ""}</td>
                 </tr>
                 <tr>
                   <td className="font-semibold">Last Maintenance</td>
-                  <td>28 Juni 2018</td>
+                  <td>{DataInventory ? DataInventory.Note : "None"}</td>
                 </tr>
 
                 <tr>
                   <td className="font-semibold">Status</td>
-                  <td>Aktif</td>
+                  <td>{DataInventory ? DataInventory.Status : ""}</td>
                 </tr>
               </table>
             </div>
             <div className="softwaretable text-sm pt-5">
               <span className=" font-bold text-[1.2rem]">Software</span>
               <table className="font-light pt-10 w-full border-amber-50 border-1">
-                <tr>
-                  <td className="font-light h-8 px-2 border-amber-50 border-1 text-center justify-center">
-                    1
-                  </td>
-                  <td className="font-light h-8 px-2 border-amber-50 border-1 content-center justify-center">
-                    Windows 11
-                  </td>
-                  <td className="font-light h-8 px-2 border-amber-50 border-1 content-center justify-center">
-                    Miharob1000@Outlook.com
-                  </td>
-                  <td className="font-light h-8 px-2 border-amber-50 border-1 content-center justify-center">
-                    SuperSecretPassword177
-                  </td>
-                </tr>
-                <tr>
-                  <td className="font-light h-8 px-2 border-amber-50 border-1 text-center justify-center">
-                    2
-                  </td>
-                  <td className="font-light h-8 px-2 border-amber-50 border-1 content-center justify-center">
-                    Windows 11
-                  </td>
-                  <td className="font-light h-8 px-2 border-amber-50 border-1 content-center justify-center">
-                    Miharob1000@Outlook.com
-                  </td>
-                  <td className="font-light h-8 px-2 border-amber-50 border-1 content-center justify-center">
-                    SuperSecretPassword177
-                  </td>
-                </tr>
+                {DataInventory
+                  ? DataInventory.Soft.map((data, index) => (
+                      <tr key={data[0]}>
+                        <td className="font-light h-8 px-2 border-amber-50 border-1 text-left justify-center">
+                          {index + 1}
+                        </td>
+                        <td className="font-light h-8 px-2 border-amber-50 border-1 content-center justify-center">
+                          {data[1]}
+                        </td>
+                        <td className="font-light h-8 px-2 border-amber-50 border-1 content-center justify-center">
+                          {data[2]}
+                        </td>
+                        <td className="font-light h-8 px-2 border-amber-50 border-1 content-center justify-center">
+                          {data[3]}
+                        </td>
+                      </tr>
+                    ))
+                  : ""}
               </table>
             </div>
             <div className="Berkas text-sm pt-5">
               <span className=" font-bold text-[1.2rem]">Lampiran Berkas</span>
               <table className="font-light pt-10 w-full border-amber-50 border-1">
-                <tr>
-                  <td className="font-light h-8 px-2 border-amber-50 border-1 text-center justify-center">
-                    1
-                  </td>
-                  <td className="font-light h-8 px-2 border-amber-50 border-1 content-center justify-center">
-                    Serah Terima
-                  </td>
-                  <td className="font-light h-8 px-2 border-amber-50 border-1 content-center justify-center">
-                    https:/google.com/hellowodl
-                  </td>
-                  <td className="font-light h-8 px-2 border-amber-50 border-1 content-center justify-center">
-                    25 Maret 2029
-                  </td>
-                </tr>
-                <tr>
-                  <td className="font-light h-8 px-2 border-amber-50 border-1 text-center justify-center">
-                    2
-                  </td>
-                  <td className="font-light h-8 px-2 border-amber-50 border-1 content-center justify-center">
-                    Analisa Kerusakan
-                  </td>
-                  <td className="font-light h-8 px-2 border-amber-50 border-1 content-center justify-center">
-                    Https://192.197.213/analisa.pdf
-                  </td>
-                  <td className="font-light h-8 px-2 border-amber-50 border-1 content-center justify-center">
-                    22 Maret 2019
-                  </td>
-                </tr>
+                {DataInventory
+                  ? DataInventory.Docs.map((data, index) => (
+                      <tr key={data[0]}>
+                        <td className="font-light h-8 px-2 border-amber-50 border-1 text-center justify-center">
+                          {index + 1}
+                        </td>
+                        <td className="font-light h-8 px-2 border-amber-50 border-1 content-center justify-center">
+                          {data[1]}
+                        </td>
+                        <td className="font-light h-8 px-2 border-amber-50 border-1 content-center justify-center">
+                          <a
+                            href={`http://localhost:8990/docs/${id}/${data[2]}`}
+                            target="_blank"
+                          >
+                            {data[2]}
+                          </a>
+                        </td>
+                        <td className="font-light h-8 px-2 border-amber-50 border-1 content-center justify-center">
+                          {data[3]}
+                        </td>
+                      </tr>
+                    ))
+                  : ""}
               </table>
             </div>
-            <div className="controllbtn flex flex-row w-full justify-between pt-10">
+            <div className="controllbtn flex flex-row w-full justify-between pt-10 cursor-default">
               <div className="editbtn flex flex-row gap-3">
-                <div className="h-10 w-auto px-3 border-1 border-green-300 rounded-sm bg-gray-900/84 hover:bg-gray-900/90 active:bg-gray-500 font-extralight text-green-300 text-[1rem] flex items-center justify-center">
+                <div
+                  className="h-10 w-auto px-3 border-1 border-green-300 rounded-sm bg-gray-900/84 hover:bg-gray-900/90 active:bg-gray-500 font-extralight text-green-300 text-[1rem] flex items-center justify-center"
+                  onClick={() => setEditdata(true)}
+                >
                   Edit Data
                 </div>
-                <div className="h-10 w-auto px-3 border-1 border-green-300 rounded-sm bg-gray-900/84 hover:bg-gray-900/90 active:bg-gray-500 font-extralight text-green-300 text-[1rem] flex items-center justify-center">
+                <div
+                  className="h-10 w-auto px-3 border-1 border-green-300 rounded-sm bg-gray-900/84 hover:bg-gray-900/90 active:bg-gray-500 font-extralight text-green-300 text-[1rem] flex items-center justify-center"
+                  onClick={() => setEditSoft(true)}
+                >
                   Edit Software
                 </div>
               </div>
-              <div className="exitbtn ">
-                {" "}
+              <div className="exitbtn " onClick={() => navigate("/")}>
                 <div className="h-10 w-auto px-3 border-1 border-red-300 rounded-sm bg-gray-900/84 hover:bg-gray-900/90 active:bg-gray-500 font-extralight text-red-300 text-[1rem] flex items-center justify-center">
                   Exit
                 </div>
@@ -176,6 +188,21 @@ function DISPLAY(props) {
           </div>
         </div>
       </div>
+      {Editdata ? (
+        <EDITDATA
+          DataInventory={DataInventory}
+          id={id}
+          setEditdata={setEditdata}
+          setReload={setReload}
+        />
+      ) : (
+        ""
+      )}
+      {EditSoft ? (
+        <EDITSOFTWARE setEditSoft={setEditSoft} setReload={setReload} id={id} />
+      ) : (
+        ""
+      )}
     </>
   );
 }

@@ -77,6 +77,8 @@ def documents_files(inv_id):
         filename = f'{datetime.now().strftime("%Y-%m-%d_%H-%M-%S")}_' + secure_filename(
             file.filename
         )
+        if "jpg" or "png" in secure_filename(file.filename).lower().split("."):
+            filename = "profile.jpg"
         path_folder = os.path.join(app.config["UPLOAD_FOLDER"] + inv_id)
         if not os.path.exists(path_folder):
             os.makedirs(path_folder)
