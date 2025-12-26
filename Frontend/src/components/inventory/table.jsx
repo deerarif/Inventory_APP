@@ -6,16 +6,32 @@ import {
   faSort,
   faFileDownload,
   faFileCirclePlus,
+  faTrash,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { data } from "react-router-dom";
+import axios from "axios";
+
 function THETABLE(props) {
   const [openRow, setOpenRow] = useState(null);
   const [Documtsaddnew, setDocumtsaddnew] = useState("");
   const [AddnewdocState, setAddnewdocState] = useState();
   const [DocsDataID, setDocsDataID] = useState();
   const navigate = useNavigate();
+  async function handle_delete_docs(label, docs_id) {
+    try {
+      const res = await axios.delete(
+        "http://localhost:8990/API/documents/" + label + "/" + docs_id
+      );
+      const timestamp = Date.now();
 
+      if (res.status === 200) {
+        return timestamp;
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }
   function StatusColor(data_status) {
     const data_color = {
       Active: "bg-green-500",
@@ -127,14 +143,7 @@ function THETABLE(props) {
                   <td>{data.Lokasi}</td>
                   <td>{data.Unit}</td>
                   <td>{data.User}</td>
-                  <td
-                    onClick={() => {
-                      // console.log("click");
-                      props.setReloadtry(true);
-                    }}
-                  >
-                    {data.IP}
-                  </td>
+                  <td>{data.IP}</td>
                   <td>
                     <div
                       className={`category h-5 w-fit px-1 text-center content-center rounded-2xl ${StatusColor(
@@ -199,7 +208,15 @@ function THETABLE(props) {
                         </a>
                       </td>
                       <td colSpan={1}>
-                        <FontAwesomeIcon icon={faFileDownload} />
+                        <FontAwesomeIcon
+                          icon={faTrash}
+                          className="hover:text-red-400"
+                          onClick={() =>
+                            handle_delete_docs(data.ID, docs[0])
+                              ? props.setReloadtry(docs[0])
+                              : alert("Error can't Delete")
+                          }
+                        />
                       </td>
                       <td colSpan={1}>{docs[3]}</td>
                     </tr>

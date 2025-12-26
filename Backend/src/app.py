@@ -89,10 +89,10 @@ def documents_files(inv_id):
         return "error\n", 500
 
 
-@app.route("/API/documents/<string:docs_id>", methods=["DELETE"])
-def documents_del(docs_id):
+@app.route("/API/documents/<string:label>/<string:docs_id>", methods=["DELETE"])
+def documents_del(label, docs_id):
     try:
-        rem_docs(docs_id)
+        rem_docs(label, docs_id)
         return "succes\n", 200
     except Exception as err:
         print(err)
@@ -121,10 +121,10 @@ def software_add():
         return "error\n", 500
 
 
-@app.route("/API/software/<string:soft_id>", methods=["DELETE"])
-def software_del(soft_id):
+@app.route("/API/software/<string:barcode>/<string:soft_id>", methods=["DELETE"])
+def software_del(barcode, soft_id):
     try:
-        rem_soft(soft_id)
+        rem_soft(barcode, soft_id)
         return "succes\n", 200
     except Exception as err:
         print(err)

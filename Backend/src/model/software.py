@@ -30,7 +30,7 @@ def add_soft(data):
 
 
 # remove Software from database
-def rem_soft(num_id, Asset_ID):
+def rem_soft(Asset_ID, num_id):
     stmt = delete(Software).where(
         Software.Software_id == num_id and Software.Owner_id == Asset_ID
     )

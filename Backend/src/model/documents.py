@@ -24,7 +24,7 @@ def add_docs(data):
 
 
 # remove documents from database
-def rem_docs(num_id, Asset_ID):
+def rem_docs(Asset_ID, num_id):
     stmt = delete(Documents).where(
         Documents.Documents_id == num_id and Documents.Owner_id == Asset_ID
     )

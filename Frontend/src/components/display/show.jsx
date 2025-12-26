@@ -4,6 +4,9 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrash } from "@fortawesome/free-solid-svg-icons";
+
 function DISPLAY(props) {
   const { id } = useParams();
   const [DataInventory, setDataInventory] = useState();
@@ -11,6 +14,20 @@ function DISPLAY(props) {
   const [EditSoft, setEditSoft] = useState();
   const [Reload, setReload] = useState();
   const navigate = useNavigate();
+  async function handle_delete(label, soft_id) {
+    try {
+      const res = await axios.delete(
+        "http://localhost:8990/API/software/" + label + "/" + soft_id
+      );
+      const timestamp = Date.now();
+
+      if (res.status === 200) {
+        setReload(timestamp);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }
   useEffect(() => {
     const fetchdata = async (ids) => {
       try {
@@ -119,7 +136,7 @@ function DISPLAY(props) {
                 {DataInventory
                   ? DataInventory.Soft.map((data, index) => (
                       <tr key={data[0]}>
-                        <td className="font-light h-8 px-2 border-amber-50 border-1 text-left justify-center">
+                        <td className="font-light h-8 w-[3%] px-2 border-amber-50 border-1 text-center justify-center">
                           {index + 1}
                         </td>
                         <td className="font-light h-8 px-2 border-amber-50 border-1 content-center justify-center">
@@ -130,6 +147,16 @@ function DISPLAY(props) {
                         </td>
                         <td className="font-light h-8 px-2 border-amber-50 border-1 content-center justify-center">
                           {data[3]}
+                        </td>
+                        <td
+                          className="h-8 pt-2 border-amber-50 border-1 content-center justify-center flex"
+                          onClick={() => handle_delete(id, data[0])}
+                        >
+                          <FontAwesomeIcon
+                            icon={faTrash}
+                            size="sm"
+                            className="hover:text-gray-200 text-red-400"
+                          />
                         </td>
                       </tr>
                     ))
@@ -176,7 +203,7 @@ function DISPLAY(props) {
                   className="h-10 w-auto px-3 border-1 border-green-300 rounded-sm bg-gray-900/84 hover:bg-gray-900/90 active:bg-gray-500 font-extralight text-green-300 text-[1rem] flex items-center justify-center"
                   onClick={() => setEditSoft(true)}
                 >
-                  Edit Software
+                  Add Software
                 </div>
               </div>
               <div className="exitbtn " onClick={() => navigate("/")}>
