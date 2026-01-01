@@ -15,7 +15,7 @@ function EDITDATA(props) {
       );
       if (res.status === 200) {
         alert("Data Has Been Updated");
-        reload(true);
+        reload(Date.now());
         close_windows(false);
       }
     } catch (err) {
@@ -90,12 +90,13 @@ function EDITDATA(props) {
                   className="bg-gray-700/50 px-2 font-light h-10 rounded-sm"
                   onChange={(e) => handleInput(e, "SSD")}
                 />
-                {/* <span className="font-serif font-bold">HDD</span>
+                <span className="font-serif font-bold">Operating System</span>
                 <input
                   type="text"
-                  placeholder=""
+                  placeholder={props.DataInventory.OS}
                   className="bg-gray-700/50 px-2 font-light h-10 rounded-sm"
-                /> */}
+                  onChange={(e) => handleInput(e, "OS")}
+                />
               </div>
               <div className="flex flex-col gap-2 w-full">
                 <span className="font-serif font-bold">HDD</span>
@@ -149,18 +150,26 @@ function EDITDATA(props) {
                   disabled
                 />
                 <span className="font-serif font-bold">Status</span>
-                <input
-                  type="text"
-                  placeholder={props.DataInventory.Status}
-                  className="bg-gray-700/50 px-2 font-light h-10 rounded-sm"
+                <select
+                  id="Status"
+                  class="block w-full bg-gray-700/50 px-2 font-light h-10 hover:bg-gray-700/60 focus:outline-0 text-heading text-sm rounded-sm focus:ring-brand shadow-xs placeholder:text-body"
                   onChange={(e) => handleInput(e, "Status")}
-                />
-                {/* <span className="font-serif font-bold">Judul</span>
+                >
+                  {/* <option selected>Status</option> */}
+                  <option value="Aktif">Aktif</option>
+                  <option value="Tidak_Aktif">Tidak_Aktif</option>
+                  <option value="Perbaikan">Perbaikan</option>
+                  <option value="Rusak">Rusak</option>
+                  <option value="Rusak">Musnah</option>
+                  <option value="Rusak">Tidak_digunakan</option>
+                </select>
+                <span className="font-serif font-bold">Windows Key</span>
                 <input
                   type="text"
-                  placeholder="text1"
+                  placeholder={props.DataInventory.WIN_KEY}
                   className="bg-gray-700/50 px-2 font-light h-10 rounded-sm"
-                /> */}
+                  onChange={(e) => handleInput(e, "WIN_KEY")}
+                />
               </div>
             </form>
 

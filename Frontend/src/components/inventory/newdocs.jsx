@@ -93,7 +93,7 @@ function ADDNEWDOCS(props) {
                 }
                 sendDataDocs(props.dataID, message, file.name).then(() => {
                   props.state(false);
-                  props.setReloadtry(true);
+                  props.setReloadtry(Date.now());
                 });
               }}
             >

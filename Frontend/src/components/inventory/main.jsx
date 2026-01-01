@@ -52,10 +52,10 @@ function INVENTROY() {
       .then((res) => {
         setInventory_data(res.data);
         res.data.map((data) => {
-          if (data.Status === "Active") {
+          if (data.Status === "Aktif") {
             DataHeaderSementara.Aktif++;
           }
-          if (data.Status === "Tidak_Aktif") {
+          if (data.Status === "Tidak Aktif") {
             DataHeaderSementara.Tidak_Aktif++;
           }
           if (data.Status === "Perbaikan") {
@@ -67,7 +67,7 @@ function INVENTROY() {
           if (data.Status === "Musnah") {
             DataHeaderSementara.Musnah++;
           }
-          if (data.Status === "Tidak_digunakan") {
+          if (data.Status === "Tidak Digunakan") {
             DataHeaderSementara.Tidak_digunakan++;
           }
         });
@@ -92,7 +92,7 @@ function INVENTROY() {
           <div className="flex flex-row b items-center top-5 gap-x-2 absolute left-3 cursor-default">
             <div
               className=" category h-8 w-25 text-center content-center rounded-2xl bg-green-500 hover:bg-green-700"
-              data-value="Active"
+              data-value="Aktif"
               onClick={(e) => ClickShit(e.currentTarget.dataset.value)}
             >
               <span>Aktif {DataHeader ? DataHeader.Aktif : "0"}</span>
@@ -123,7 +123,7 @@ function INVENTROY() {
               data-value="Musnah"
               onClick={(e) => ClickShit(e.currentTarget.dataset.value)}
             >
-              <span>Musnah {DataHeader ? DataHeader.Rusak : "0"}</span>
+              <span>Musnah {DataHeader ? DataHeader.Musnah : "0"}</span>
             </div>
             <div
               className="tools h-8 w-40 bg-orange-300 hover:bg-orange-500 text-center content-center rounded-[25px]"

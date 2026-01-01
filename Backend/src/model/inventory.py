@@ -1,5 +1,5 @@
 import sys, os
-from sqlalchemy import update, delete
+from sqlalchemy import update, delete, asc
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
@@ -18,10 +18,12 @@ def process_data(data):
         {
             "Nama": result.Nama,
             "Desc": result.Desc,
-            "Profile": result.Profile,
             "ID": result.ID,
             "Searial_Num": result.Searial_Num,
             "Lokasi": result.Lokasi,
+            "Category": result.Category,
+            "OS": result.OS,
+            "WIN_KEY": result.WIN_KEY,
             "CPU": result.CPU,
             "RAM": result.RAM,
             "SSD": result.SSD,
@@ -55,7 +57,8 @@ def data_verify(data):
 
 # function get all inventory data
 def retrive_all():
-    result = db_session.query(Assets).all()
+    # result = db_session.query(Assets).all()
+    result = db_session.query(Assets).order_by(asc(Assets.Lokasi)).all()
     # print(type({"data": result}))
     return process_data(result)
 
@@ -68,10 +71,11 @@ def retrive_one(inv_id):
             data = {
                 "Nama": result.Nama,
                 "Desc": result.Desc,
-                "Profile": result.Profile,
                 "ID": result.ID,
                 "Searial_Num": result.Searial_Num,
                 "Lokasi": result.Lokasi,
+                "OS": result.OS,
+                "WIN_KEY": result.WIN_KEY,
                 "CPU": result.CPU,
                 "RAM": result.RAM,
                 "SSD": result.SSD,
@@ -113,10 +117,12 @@ def add_inv(data):
     add_data = Assets(
         Nama=data["Nama"],
         Desc=data["Desc"],
-        Profile=data["Profile"],
         ID=data["ID"],
         Searial_Num=data["Searial_Num"],
         Lokasi=data["Lokasi"],
+        Category=data["Category"],
+        OS=data["OS"],
+        WIN_KEY=data["WIN_KEY"],
         CPU=data["CPU"],
         RAM=data["RAM"],
         SSD=data["SSD"],

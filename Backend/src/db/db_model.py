@@ -34,14 +34,16 @@ class Assets(Base):
 
     Nama = Column(String(250), nullable=False)
     Desc = Column(Text)
-    Profile = Column(String(255))
+    OS = Column(String(255))
+    WIN_KEY = Column(String(255))
     ID = Column(String(50), nullable=False, primary_key=True)
     Searial_Num = Column(String(255))
     Lokasi = Column(String(250))
+    Category = Column(String(250))
     CPU = Column(String(255))
-    RAM = Column(Integer)
-    SSD = Column(Integer)
-    HDD = Column(Integer)
+    RAM = Column(String(25))
+    SSD = Column(String(25))
+    HDD = Column(String(25))
     Mobo = Column(String(250))
     IP = Column(String(100))
     KIS = Column(String(250))
@@ -51,6 +53,12 @@ class Assets(Base):
     Status = Column(String(100), nullable=False)
     Documents = relationship(
         "Documents",
+        back_populates="asset",
+        cascade="all, delete-orphan",  # remove children on delete
+        passive_deletes=True,
+    )
+    Antivirus = relationship(
+        "Antivirus",
         back_populates="asset",
         cascade="all, delete-orphan",  # remove children on delete
         passive_deletes=True,
@@ -68,6 +76,19 @@ class Assets(Base):
         cascade="all, delete-orphan",
         passive_deletes=True,
     )
+
+
+# Model for Antivrus
+class Antivirus(Base):
+    __tablename__ = "Antivirus"
+
+    Antivirus_id = Column(Integer, primary_key=True, nullable=False)
+    Owner_id = Column(
+        String(255), ForeignKey("asset.ID", ondelete="CASCADE", onupdate="CASCADE")
+    )
+    KEY = Column(String(250), nullable=False)
+    KIS_date = Column(DateTime)
+    asset = relationship("Assets", back_populates="Antivirus")
 
 
 # Model for Documents
