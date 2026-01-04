@@ -5,11 +5,12 @@ from random import randint
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 load_dotenv()
-from model.inventory import add_inv
-from model.inventory import retrive_all, update_inv, retrive_one, del_inv
-from model.documents import add_docs
-from model.documents import retrive_docs, rem_docs
-from model.software import rem_soft, add_soft, retrive_soft
+from method.inventory import add_inv
+from method.inventory import retrive_all, update_inv, retrive_one, del_inv
+from method.documents import add_docs
+from method.documents import retrive_docs, rem_docs
+from method.software import rem_soft, add_soft, retrive_soft
+from method.maintenance import get_data, add_maintenance, make_schedule, del_schedule
 
 load_dotenv()
 
@@ -62,6 +63,12 @@ def make_fake_data(labels):
     return [data, data_docs, data_soft]
 
 
+maintenance_data = {"id": "207637", "Note": "Test1234"}
+
+# add_maintenance(maintenance_data)
+del_schedule("NL-467")
+# make_schedule()
+# make_schedule()
 # for i in range(1, 100):
 #     data = make_fake_data(
 #         randint(
@@ -84,77 +91,77 @@ def make_fake_data(labels):
 # retrive_soft("00000")
 # rem_soft(1, "2222222")
 # del_inv("00000")
-from datetime import datetime
+# from datetime import datetime
 
-from typing import Optional
-
-
-import pandas as pd
-
-df = pd.read_excel("./Inventory Asset.xlsx")
-data = df.T.to_dict()
-
-for i in data:
-    if type(data[i]["Barcode"]) != int:
-        data[i]["Barcode"] = f"NL-{i}"
-
-# category = []
-for i in data:
-    # category.append(data[i]['Category'])
-    if "tablet" in data[i]["Category"].lower():
-        data[i]["Category"] = "Tablet"
-    if "tv" in data[i]["Category"].lower():
-        data[i]["Category"] = "TV"
-    if "printer" in data[i]["Category"].lower():
-        data[i]["Category"] = "Printer"
-    if "scanner" in data[i]["Category"].lower():
-        data[i]["Category"] = "Scanner"
-    if "laptop" in data[i]["Category"].lower():
-        data[i]["Category"] = "Laptop"
-    if "komputer mini pc" == data[i]["Category"].lower():
-        data[i]["Category"] = "Komputer Desktop"
-    if "thermal" in data[i]["Category"].lower():
-        data[i]["Category"] = "Printer"
-    if "alat radiologi" == data[i]["Category"].lower():
-        data[i]["Category"] = "Komputer Desktop"
-from typing import Optional, Union
+# from typing import Optional
 
 
-def year_to_str2(dt: Optional[Union[datetime, pd.Timestamp]]) -> str:
-    if dt is None or pd.isna(dt):
-        return "25-04-1985"
-    return dt.strftime("%d-%m-%Y")
+# import pandas as pd
+
+# df = pd.read_excel("./Inventory Asset.xlsx")
+# data = df.T.to_dict()
+
+# for i in data:
+#     if type(data[i]["Barcode"]) != int:
+#         data[i]["Barcode"] = f"NL-{i}"
+
+# # category = []
+# for i in data:
+#     # category.append(data[i]['Category'])
+#     if "tablet" in data[i]["Category"].lower():
+#         data[i]["Category"] = "Tablet"
+#     if "tv" in data[i]["Category"].lower():
+#         data[i]["Category"] = "TV"
+#     if "printer" in data[i]["Category"].lower():
+#         data[i]["Category"] = "Printer"
+#     if "scanner" in data[i]["Category"].lower():
+#         data[i]["Category"] = "Scanner"
+#     if "laptop" in data[i]["Category"].lower():
+#         data[i]["Category"] = "Laptop"
+#     if "komputer mini pc" == data[i]["Category"].lower():
+#         data[i]["Category"] = "Komputer Desktop"
+#     if "thermal" in data[i]["Category"].lower():
+#         data[i]["Category"] = "Printer"
+#     if "alat radiologi" == data[i]["Category"].lower():
+#         data[i]["Category"] = "Komputer Desktop"
+# from typing import Optional, Union
 
 
-# labels = []
-for i in data:
-    data_new = {
-        "Nama": data[i]["Model"],
-        "Desc": "",
-        "ID": data[i]["Barcode"],
-        "Searial_Num": data[i]["Serial Number Hardware"],
-        "Lokasi": data[i]["Nama Hardware"],
-        "Category": data[i]["Category"],
-        "OS": data[i]["Operating System"],
-        "WIN_KEY": data[i]["Serial Number OS"],
-        "CPU": data[i]["CPU"],
-        "RAM": data[i]["RAM"],
-        "SSD": data[i]["SSD"],
-        "HDD": data[i]["HDD"],
-        "Mobo": data[i]["Motherboard"],
-        "IP": data[i]["IP Address"],
-        "KIS": "",
-        "User": data[i]["Nama Pengguna"],
-        "Unit": data[i]["Location Penempatan"],
-        "Status": data[i]["Status Hardware saat ini"],
-        "Dates": year_to_str2(data[i]["Tahun Pengadaan"]),
-    }
-    # if data[i]["Barcode"] in labels:
-    #     print(data[i]["Barcode"])
-    # labels.append(data[i]["Barcode"])
-    for filter_1 in data_new:
-        if type(data_new[filter_1]) is float:
-            data_new[filter_1] = ""
-    add_inv(data_new)
-    # print(data_new)
-# retrive_all()
+# def year_to_str2(dt: Optional[Union[datetime, pd.Timestamp]]) -> str:
+#     if dt is None or pd.isna(dt):
+#         return "25-04-1985"
+#     return dt.strftime("%d-%m-%Y")
+
+
+# # labels = []
+# for i in data:
+#     data_new = {
+#         "Nama": data[i]["method"],
+#         "Desc": "",
+#         "ID": data[i]["Barcode"],
+#         "Searial_Num": data[i]["Serial Number Hardware"],
+#         "Lokasi": data[i]["Nama Hardware"],
+#         "Category": data[i]["Category"],
+#         "OS": data[i]["Operating System"],
+#         "WIN_KEY": data[i]["Serial Number OS"],
+#         "CPU": data[i]["CPU"],
+#         "RAM": data[i]["RAM"],
+#         "SSD": data[i]["SSD"],
+#         "HDD": data[i]["HDD"],
+#         "Mobo": data[i]["Motherboard"],
+#         "IP": data[i]["IP Address"],
+#         "KIS": "",
+#         "User": data[i]["Nama Pengguna"],
+#         "Unit": data[i]["Location Penempatan"],
+#         "Status": data[i]["Status Hardware saat ini"],
+#         "Dates": year_to_str2(data[i]["Tahun Pengadaan"]),
+#     }
+#     # if data[i]["Barcode"] in labels:
+#     #     print(data[i]["Barcode"])
+#     # labels.append(data[i]["Barcode"])
+#     for filter_1 in data_new:
+#         if type(data_new[filter_1]) is float:
+#             data_new[filter_1] = ""
+#     add_inv(data_new)
+#     # print(data_new)
+# # retrive_all()

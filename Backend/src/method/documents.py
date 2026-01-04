@@ -11,7 +11,7 @@ def retrive_docs(num_id):
         )
     ).all()
     if result:
-        return print(result)
+        return result
 
 
 # add new documents base on id

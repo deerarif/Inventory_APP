@@ -1,7 +1,8 @@
 from flask import Flask, request, jsonify
-from model.documents import retrive_docs, add_docs, rem_docs
-from model.inventory import retrive_all, add_inv, update_inv, retrive_one, del_inv
-from model.software import retrive_soft, add_soft, rem_soft
+from method.documents import retrive_docs, add_docs, rem_docs
+from method.inventory import retrive_all, add_inv, update_inv, retrive_one, del_inv
+from method.software import retrive_soft, add_soft, rem_soft
+from method.maintenance import get_data, add_maintenance, make_schedule, del_schedule
 import os
 from datetime import datetime
 from flask_cors import CORS, cross_origin
@@ -134,5 +135,36 @@ def software_del(barcode, soft_id):
         return "error\n", 500
 
 
+# Route for Maintenance
+@app.route("/API/maintenance", methods=["GET"])
+def maintenance():
+    try:
+        return jsonify(get_data()), 200
+    except Exception as err:
+        print(err)
+        return "error\n", 500
+
+
+@app.route("/API/reset_maintenance", methods=["GET"])
+def make_schedules():
+    try:
+        make_schedule()
+        return jsonify(make_schedule()), 200
+    except Exception as err:
+        print(err)
+        return "error\n", 500
+
+
+@app.route("/API/maintenance", methods=["POST"])
+def maintenance_add():
+    try:
+        Note_data = request.get_json()
+        add_maintenance(Note_data)
+        return "succes\n", 200
+    except Exception as err:
+        print(err)
+        return "error\n", 500
+
+
 if __name__ == "__main__":
-    app.run(host="localhost", debug=True, port=8990)
+    app.run(host="0.0.0.0", debug=True, port=8990)

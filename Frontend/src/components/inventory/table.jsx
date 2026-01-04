@@ -168,7 +168,9 @@ function THETABLE(props) {
                         setOpenRow(openRow === data.ID ? null : data.ID)
                       }
                     >
-                      <FontAwesomeIcon icon={faAngleDown} />
+                      {data.Docs.length >= 1 ? (
+                        <FontAwesomeIcon icon={faAngleDown} />
+                      ) : null}
                     </span>
                     <span
                       className="basis-50"
