@@ -13,6 +13,7 @@ def make_schedule():
             select(Assets)
             .join(Note, Note.Owner_id == Assets.ID)
             .where(func.year(Note.Last_Maintenance) < datetime.datetime.now().year)
+            .order_by(func.random())
             .limit(3)
         )
         .scalars()

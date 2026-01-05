@@ -3,6 +3,7 @@ from sqlalchemy import update, delete, asc
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
+from method.maintenance import add_maintenance
 from db.db_model import Assets
 from db.connection import db_session
 from datetime import datetime
@@ -137,6 +138,8 @@ def add_inv(data):
     )
     db_session.add(add_data)
     db_session.commit()
+    # add new asset into Maintenance schedule
+    add_maintenance({"id": data["ID"], "Note": ""})
 
 
 # edit inventory

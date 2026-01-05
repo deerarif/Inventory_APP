@@ -3,6 +3,7 @@ import {
   faChartPie,
   faFileCirclePlus,
   faRightFromBracket,
+  faNoteSticky,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useNavigate } from "react-router-dom";
@@ -62,6 +63,23 @@ function SideBar() {
             onClick={() => {
               navigate("/");
               setMenu("asset");
+            }}
+          />
+        </div>
+        <div
+          className={
+            Menu === "maintenance"
+              ? "assset size-13 content-center text-center border-y-2"
+              : "assset size-13 content-center text-center "
+          }
+        >
+          <FontAwesomeIcon
+            icon={faNoteSticky}
+            size="xl"
+            className="hover:text-purple-400"
+            onClick={() => {
+              navigate("/maintenance");
+              setMenu("maintenance");
             }}
           />
         </div>
