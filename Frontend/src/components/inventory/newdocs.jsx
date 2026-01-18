@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+const url = import.meta.env.VITE_URL;
 function ADDNEWDOCS(props) {
   const [file, setFile] = useState(null);
   const [message, setMessage] = useState(null);
@@ -9,14 +10,13 @@ function ADDNEWDOCS(props) {
     setFile(event.target.files[0]);
   };
   async function sendDataDocs(ID, NAME) {
-    const url = "http://localhost:8990/API/documents/";
     const Datafile = {
       Label_Barcode: ID,
       Deskripsi: NAME,
       Path: await sendFile(ID),
     };
     try {
-      const res = await axios.post(url, Datafile);
+      const res = await axios.post(url + "/API/documents/", Datafile);
       if (res.status === 200) {
         console.log(res);
         alert("success add to database");
@@ -27,10 +27,9 @@ function ADDNEWDOCS(props) {
   }
   async function sendFile(ID) {
     const formData = new FormData();
-    const url = "http://localhost:8990/API/upload/" + ID;
     formData.append("Documents", file);
     try {
-      const res = await axios.post(url, formData);
+      const res = await axios.post(url + "/API/upload/" + ID, formData);
       if (res.status === 200) {
         console.log(res.data);
         alert("success upload file");

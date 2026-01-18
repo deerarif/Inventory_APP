@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import add_img from "../../assets/add-image-photo-icon.svg";
-
+const url = import.meta.env.VITE_URL;
 function DISPLAY(props) {
   const { id } = useParams();
   const [DataInventory, setDataInventory] = useState();
@@ -19,7 +19,7 @@ function DISPLAY(props) {
   async function handle_delete(label, soft_id) {
     try {
       const res = await axios.delete(
-        "http://localhost:8990/API/software/" + label + "/" + soft_id
+        url + "/API/software/" + label + "/" + soft_id
       );
       const timestamp = Date.now();
 
@@ -34,10 +34,9 @@ function DISPLAY(props) {
     // Get the first file from the selection
     // setFile(event.target.files[0]);
     const formData = new FormData();
-    const url = "http://localhost:8990/API/upload/" + id;
     formData.append("Documents", event.target.files[0]);
     try {
-      const res = await axios.post(url, formData);
+      const res = await axios.post(url + "/API/upload/" + id, formData);
       if (res.status === 200) {
         alert("success upload profile");
         setReload(Date.now());
@@ -48,24 +47,18 @@ function DISPLAY(props) {
   };
   const getProfile = async (ids) => {
     try {
-      const res = await axios.get(
-        "http://localhost:8990/docs/" + ids + "/profile.jpg"
-      );
+      const res = await axios.get(url + "/docs/" + ids + "/profile.jpg");
       if (res.status === 200) {
-        setProfile("http://localhost:8990/docs/" + ids + "/profile.jpg");
+        setProfile(url + "/docs/" + ids + "/profile.jpg");
       }
-
-      // setProfile(res.status);
     } catch (err) {
-      console.log(err);
+      console.log("profile is None");
     }
   };
   useEffect(() => {
     const fetchdata = async (ids) => {
       try {
-        const res = await axios.get(
-          "http://localhost:8990/API/inventory/" + ids
-        );
+        const res = await axios.get(url + "/API/inventory/" + ids);
         if (res.status === 200) {
           setDataInventory(res.data);
         }
@@ -79,10 +72,11 @@ function DISPLAY(props) {
   return (
     <>
       {/* <EDITSOFTWARE /> */}
-      <div className="absolute inset-0 text-[0.8rem] text-neutral-50 font-mono font-medium left-15 right-5 flex justify-center">
-        <div className=" rounded-[5px] bg-gray-950/30 min-w-430 absolute top-5 flex flex-row p-10 gap-10">
+      {/* <div className="absolute max-sm:relative inset-0 text-[0.8rem] text-neutral-50 font-mono font-medium max-sm:flex-col left-15 right-5 flex justify-center max-sm:overflow-hidden"> */}
+      <div className="absolute max-sm:relative inset-0 h-[100%] max-sm:flex-col text-[0.8rem] bg-gray-900/10 text-neutral-50 font-mono font-medium ml-13 items-center justify-center flex flex-row gap-10">
+        <div className="rounded-[5px] bg-gray-950/30 min-w-430 max-sm:min-w-0 max-sm:w-full absolute max-sm:relative top-5 flex flex-row max-sm:flex-col p-10 gap-10">
           <label
-            className="media w-[30%] bg-gray-700/50 h-80 rounded-sm p-10 hover:opacity-60 cursor-pointer"
+            className="media w-[30%] bg-gray-700/50 h-80 rounded-sm p-10 hover:opacity-60 cursor-pointer max-sm:w-[100%]"
             onChange={handleFileChange}
           >
             {Profile ? (
@@ -102,11 +96,11 @@ function DISPLAY(props) {
             {/* <img src={Profile} /> */}
             {/* <input type="file" className="hidden" /> */}
           </label>
-          <div className="w-full rounded-sm flex flex-col">
+          <div className="w-full rounded-sm flex flex-col max-sm:mt-10">
             <span className=" text-white font-extrabold text-2xl">
               {DataInventory ? DataInventory.Nama : ""}
             </span>
-            <span className=" font-medium text-gray-400 w-200 text-justify border-y-3 border-amber-50/1">
+            <span className=" font-medium text-gray-400 w-200 max-sm:w-auto text-justify border-y-3 border-amber-50/1">
               {DataInventory ? DataInventory.Desc : ""}
             </span>
             <div className="tabel">
@@ -121,6 +115,10 @@ function DISPLAY(props) {
                 <tr>
                   <td className="font-semibold">No. Barcode</td>
                   <td>{": " + id}</td>
+                </tr>
+                <tr>
+                  <td className="font-semibold">Category</td>
+                  <td>{DataInventory ? ": " + DataInventory.Category : ""}</td>
                 </tr>
                 <tr>
                   <td className="font-semibold">Lokasi</td>
@@ -233,7 +231,7 @@ function DISPLAY(props) {
                         </td>
                         <td className="font-light h-8 px-2 border-amber-50 border-1 content-center justify-center">
                           <a
-                            href={`http://localhost:8990/docs/${id}/${data[2]}`}
+                            href={`${url}  + "/docs/${id}/${data[2]}`}
                             target="_blank"
                           >
                             {data[2]}
@@ -247,7 +245,7 @@ function DISPLAY(props) {
                   : ""}
               </table>
             </div>
-            <div className="controllbtn flex flex-row w-full justify-between pt-10 cursor-default">
+            <div className="controllbtn flex flex-row max-sm:flex-col max-sm:gap-2 w-full justify-between pt-10 cursor-default">
               <div className="editbtn flex flex-row gap-3">
                 <div
                   className="h-10 w-auto px-3 border-1 border-green-300 rounded-sm bg-gray-900/84  hover:bg-gray-900/10 active:bg-gray-500 font-extralight text-green-300 hover:text-green-300/80 text-[1rem] flex items-center justify-center"
@@ -263,7 +261,7 @@ function DISPLAY(props) {
                 </div>
               </div>
               <div className="exitbtn " onClick={() => navigate("/")}>
-                <div className="h-10 w-auto px-3 border-1 border-red-300  rounded-sm bg-gray-900/84 hover:bg-gray-900/10 active:bg-gray-500 font-extralight text-red-300 text-[1rem] flex items-center justify-center">
+                <div className="max-sm:w-fit h-10 w-auto px-3 border-1 border-red-300  rounded-sm bg-gray-900/84 hover:bg-gray-900/10 active:bg-gray-500 font-extralight text-red-300 text-[1rem] flex items-center justify-center">
                   Exit
                 </div>
               </div>

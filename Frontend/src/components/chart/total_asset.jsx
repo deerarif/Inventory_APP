@@ -1,58 +1,14 @@
-import React from "react";
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend,
-} from "chart.js";
-import { Bar } from "react-chartjs-2";
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+import { Doughnut } from "react-chartjs-2";
 
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend
-);
+ChartJS.register(ArcElement, Tooltip, Legend);
 
-export const options = {
-  responsive: true,
-  plugins: {
-    legend: {
-      position: "top",
-    },
-    title: {
-      display: true,
-    },
-  },
-};
-
-const labels = [
-  "Januari",
-  "Februari",
-  "Maret",
-  "April",
-  "Mei",
-  "Juni",
-  "Juli",
-  "Agustus",
-  "September",
-  "Oktober",
-  "November",
-  "Desember",
-];
-
-export function Manitenance_Charts(props) {
-  const data1 = {
-    labels,
+export function Total_aset(props) {
+  const data = {
+    labels: Object.keys(props.Data),
     datasets: [
       {
-        label: "Maintenance 2026",
-        data: props.Data,
+        data: Object.values(props.Data),
         backgroundColor: [
           "rgba(255, 99, 132, 0.25)",
           "rgba(54, 162, 235, 0.25)",
@@ -80,9 +36,20 @@ export function Manitenance_Charts(props) {
           "rgb(120, 200, 255)",
         ],
         borderWidth: 1,
-        // borderRadius: 5,
       },
     ],
   };
-  return <Bar options={options} data={data1} />;
+  const options = {
+    plugins: {
+      legend: {
+        labels: {
+          font: {
+            size: 10,
+          },
+        },
+      },
+    },
+  };
+
+  return <Doughnut data={data} options={options} />;
 }

@@ -1,5 +1,6 @@
 import axios from "axios";
 import { data } from "react-router-dom";
+const url = import.meta.env.VITE_URL;
 function EDITDATA(props) {
   const Form_data = { ...props.DataInventory };
   const handleInput = (e, data_name) => {
@@ -9,10 +10,7 @@ function EDITDATA(props) {
   };
   async function send_data_update(data_form, id, reload, close_windows) {
     try {
-      const res = await axios.post(
-        "http://localhost:8990/API/inventory/" + id,
-        data_form
-      );
+      const res = await axios.post(url + "/API/inventory/" + id, data_form);
       if (res.status === 200) {
         alert("Data Has Been Updated");
         reload(Date.now());
@@ -155,13 +153,13 @@ function EDITDATA(props) {
                   class="block w-full bg-gray-700/50 px-2 font-light h-10 hover:bg-gray-700/60 focus:outline-0 text-heading text-sm rounded-sm focus:ring-brand shadow-xs placeholder:text-body"
                   onChange={(e) => handleInput(e, "Status")}
                 >
-                  {/* <option selected>Status</option> */}
+                  <option selected>Pilih Status</option>
                   <option value="Aktif">Aktif</option>
-                  <option value="Tidak_Aktif">Tidak_Aktif</option>
+                  <option value="Tidak Aktif">Tidak Aktif</option>
                   <option value="Perbaikan">Perbaikan</option>
                   <option value="Rusak">Rusak</option>
-                  <option value="Rusak">Musnah</option>
-                  <option value="Rusak">Tidak_digunakan</option>
+                  <option value="Musnah">Musnah</option>
+                  <option value="Tidak Digunakan">Tidak Digunakan</option>
                 </select>
                 <span className="font-serif font-bold">Windows Key</span>
                 <input

@@ -1,4 +1,5 @@
 import axios from "axios";
+const url = import.meta.env.VITE_URL;
 function EDITSOFTWARE(props) {
   const form_data = {
     ID: props.id,
@@ -17,10 +18,7 @@ function EDITSOFTWARE(props) {
       return;
     }
     try {
-      const res = await axios.post(
-        "http://localhost:8990/API/software/",
-        form_data
-      );
+      const res = await axios.post(url + "/API/software/", form_data);
       if (res.status === 200) {
         alert("Data Sukses Dikirim");
         props.setEditSoft(false);

@@ -73,6 +73,7 @@ def retrive_one(inv_id):
                 "Nama": result.Nama,
                 "Desc": result.Desc,
                 "ID": result.ID,
+                "Category": result.Category,
                 "Searial_Num": result.Searial_Num,
                 "Lokasi": result.Lokasi,
                 "OS": result.OS,
@@ -111,7 +112,8 @@ def retrive_one(inv_id):
             }
             return data
     except:
-        return "error"
+        db_session.rollback()
+        return
 
 
 def add_inv(data):

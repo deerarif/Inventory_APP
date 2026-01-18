@@ -1,17 +1,21 @@
 import React, { useState, useEffect } from "react";
 import ADDNEWDOCS from "./newdocs";
-import { useNavigate } from "react-router-dom";
+import { Await, useNavigate } from "react-router-dom";
 import LOADING from "../../assets/loading.gif";
+import FILTERS from "./addfilter";
 import {
   faAngleDown,
   faSort,
   faFileDownload,
   faFileCirclePlus,
   faTrash,
+  faPlus,
+  faXmark,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { data } from "react-router-dom";
 import axios from "axios";
+const url = import.meta.env.VITE_URL;
 
 function THETABLE(props) {
   const [openRow, setOpenRow] = useState(null);
@@ -19,10 +23,15 @@ function THETABLE(props) {
   const [AddnewdocState, setAddnewdocState] = useState();
   const [DocsDataID, setDocsDataID] = useState();
   const navigate = useNavigate();
+  const [FilteredData, setFilteredData] = useState();
+  const [FilterState, setFilterState] = useState("");
+  const [filterArray, setFilterArray] = useState([]);
+  const [typingTimeout, setTypingTimeout] = useState(null);
+
   async function handle_delete_docs(label, docs_id) {
     try {
       const res = await axios.delete(
-        "http://localhost:8990/API/documents/" + label + "/" + docs_id
+        url + "/API/documents/" + label + "/" + docs_id
       );
       const timestamp = Date.now();
 
@@ -33,10 +42,11 @@ function THETABLE(props) {
       console.log(err);
     }
   }
+
   function StatusColor(data_status) {
     const data_color = {
       Aktif: "bg-green-500",
-      Tidak_Aktif: "bg-pink-400",
+      "Tidak Aktif": "bg-pink-400",
       Perbaikan: "bg-blue-400",
       Rusak: "bg-red-400",
       Musnah: "bg-gray-400",
@@ -46,6 +56,7 @@ function THETABLE(props) {
       return data_color[data_status];
     }
   }
+
   function formatDateToDDMMYYYY(dateStr) {
     const date = new Date(dateStr);
     const day = String(date.getUTCDate()).padStart(2, "0");
@@ -54,11 +65,98 @@ function THETABLE(props) {
 
     return `${day}-${month}-${year}`;
   }
+
+  // Add filter to array
+  function handleAddFilter(inputValue) {
+    if (inputValue.trim() && !filterArray.includes(inputValue.trim())) {
+      setFilterArray([...filterArray, inputValue.trim()]);
+      // setFilterState("");
+      // document.getElementById("Filters").value = "";
+    }
+  }
+
+  // Remove filter from array
+  const handleRemoveFilter = (filterToRemove) => {
+    setFilterArray(filterArray.filter((filter) => filter !== filterToRemove));
+  };
+
+  // Filter effect - runs whenever filterArray or inv_data changes
+  useEffect(() => {
+    if (!props.inv_data) return;
+
+    let filtered = props.inv_data;
+
+    // Apply all filters in the array (AND logic - must match ALL filters)
+    if (filterArray.length > 0) {
+      filtered = filtered.filter((item) => {
+        // Check if item matches ALL filters
+        return filterArray.every((filterTerm) => {
+          const searchTerm = filterTerm.toLowerCase();
+          return (
+            item.ID?.toLowerCase().includes(searchTerm) ||
+            item.Lokasi?.toLowerCase().includes(searchTerm) ||
+            item.Unit?.toLowerCase().includes(searchTerm) ||
+            item.User?.toLowerCase().includes(searchTerm) ||
+            item.IP?.toLowerCase().includes(searchTerm) ||
+            item.Status?.toLowerCase().includes(searchTerm) ||
+            item.Category?.toLowerCase().includes(searchTerm) ||
+            item.Nama?.toLowerCase().includes(searchTerm) ||
+            formatDateToDDMMYYYY(item.Dates).includes(searchTerm)
+          );
+        });
+      });
+    }
+
+    setFilteredData(filtered);
+  }, [filterArray, props.inv_data]);
+
   return (
-    <div className="absolute inset-0 text-[0.8rem] text-neutral-50 font-mono font-medium top-17 p-2 overflow-visible">
+    <div className="absolute inset-0 max-sm:relative text-[0.8rem] text-neutral-50 font-mono font-medium top-17 p-2 overflow-visible">
+      {/* <div className="flex gap-2">
+          <input
+            id="Filters"
+            type="text"
+            placeholder="Enter filter term..."
+            className="bg-gray-900 text-amber-50 px-2 py-1 rounded"
+          />
+          <button
+            onClick={handleAddFilter}
+            className="bg-purple-300 hover:bg-purple-400 text-white px-3 py-1 rounded flex items-center gap-2"
+          >
+            <FontAwesomeIcon icon={faPlus} />
+            Add Filter
+          </button>
+        </div> */}
+      {props.filterbtn[0] ? (
+        <FILTERS
+          filterbtn={props.filterbtn[1]}
+          handleAddFilters={handleAddFilter}
+        />
+      ) : null}
+      {filterArray.length > 0 && (
+        <div className="mb-3 flex gap-3 items-center flex-wrap">
+          <div className="flex gap-2 flex-wrap">
+            {filterArray.map((filter, index) => (
+              <div
+                key={index}
+                className="bg-purple-300 text-amber-50 px-3 py-1 rounded flex items-center gap-2"
+              >
+                <span>{filter}</span>
+                <FontAwesomeIcon
+                  icon={faXmark}
+                  className="cursor-pointer hover:text-red-400"
+                  onClick={() => handleRemoveFilter(filter)}
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
       <div className={Documtsaddnew ? "" : "hidden"}>
         <ADDNEWDOCS nowstate={Documtsaddnew} onupdate={setDocumtsaddnew} />
       </div>
+
       <table className="left-15 w-full cursor-default">
         <tr className=" text-left font-bold text-[1rem] border-y-2 border-amber-50 h-10">
           <th className="w-5"></th>
@@ -133,8 +231,8 @@ function THETABLE(props) {
             Tahun Pengadaan
           </th>
         </tr>
-        {props.inv_data ? (
-          props.inv_data.map((data) => (
+        {FilteredData ? (
+          FilteredData.map((data) => (
             <React.Fragment key={data.ID}>
               <tr className="h-9 border-y-1 border-amber-50 hover:bg-gray-950">
                 <td></td>
@@ -203,12 +301,7 @@ function THETABLE(props) {
                     <td colSpan={3}>{docs[1]}</td>
                     <td colSpan={4}>
                       <a
-                        href={
-                          "http://localhost:8990/docs/" +
-                          data.ID +
-                          "/" +
-                          docs[2]
-                        }
+                        href={url + "/docs/" + data.ID + "/" + docs[2]}
                         className="hover:text-blue-500"
                         target="_blank"
                         rel="noreferrer"

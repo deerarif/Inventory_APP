@@ -13,8 +13,9 @@ function SideBar() {
   const navigate = useNavigate();
 
   return (
-    <div className="bar fixed left-0 bg-gray-950 h-dvh w-13 justify-center content-center">
-      <div className="menu flex flex-col gap-5 text-purple-300 font-extrabold cursor-default">
+    <div className="bar fixed left-0 z-50 max-sm:left-auto max-sm:z-50 max-sm:bottom-0 max-sm:h-auto max-sm:w-full bg-gray-950 h-dvh  w-13 justify-center content-center">
+      {/* bar fixed left-0 max-sm:left-auto max-sm:bottom-0 max-sm:h-auto max-sm:w-full bg-gray-950 h-dvh max-sm:h-auto w-13 justify-center content-center */}
+      <div className="menu flex flex-col max-sm:flex-row max-sm:gap-0 max-sm:justify-evenly gap-5 text-purple-300 font-extrabold cursor-default">
         <div
           className={
             Menu === "addinv"
@@ -84,7 +85,7 @@ function SideBar() {
           />
         </div>
       </div>
-      <div className="exit size-13 content-center text-center text-purple-300 absolute bottom-10">
+      <div className="exit size-13 content-center text-center text-purple-300 absolute bottom-10 max-sm:top-0">
         <FontAwesomeIcon
           icon={faRightFromBracket}
           size="xl"

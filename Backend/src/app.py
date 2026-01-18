@@ -3,6 +3,7 @@ from method.documents import retrive_docs, add_docs, rem_docs
 from method.inventory import retrive_all, add_inv, update_inv, retrive_one, del_inv
 from method.software import retrive_soft, add_soft, rem_soft
 from method.maintenance import get_data, add_maintenance, make_schedule, del_schedule
+from method.dashboard import dashboard
 import os
 from datetime import datetime
 from flask_cors import CORS, cross_origin
@@ -161,6 +162,16 @@ def maintenance_add():
         Note_data = request.get_json()
         add_maintenance(Note_data)
         return "succes\n", 200
+    except Exception as err:
+        print(err)
+        return "error\n", 500
+
+
+@app.route("/API/dashboard", methods=["GET"])
+def dashboard_panels():
+    try:
+        data = dashboard()
+        return jsonify(data), 200
     except Exception as err:
         print(err)
         return "error\n", 500

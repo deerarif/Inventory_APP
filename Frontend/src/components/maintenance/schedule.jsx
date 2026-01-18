@@ -2,44 +2,63 @@ import { faCamera, faHourglass1 } from "@fortawesome/free-solid-svg-icons";
 import React, { useState, useEffect, useMemo } from "react";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
+const url = import.meta.env.VITE_URL;
+import CAMERAS from "./camera";
+import { useNavigate } from "react-router-dom";
 function MAINTENANCE_SCHEDULE() {
   const [DataMaintenance, setDataMaintenance] = useState();
   const [Reloaders, setReloaders] = useState();
+  const [Camstate, setCamstate] = useState();
+  const [IDs, setIDs] = useState();
+  const [Card, setCard] = useState();
   const Note = {};
+  const navigate = useNavigate();
   async function sendData(id, note) {
-    const res = await axios.post("http://localhost:8990/API/maintenance", {
+    if (!note) {
+      alert("Silahkan isi notes");
+      return;
+    }
+    const res = await axios.post(url + "/API/maintenance", {
       id: id,
       Note: note,
     });
     if (res.status == 200) {
       alert("Data Succesed");
+
+      setCamstate(true);
       setReloaders(Date.now());
     }
   }
   useEffect(() => {
     async function fetchdata() {
-      const res = await axios.get("http://localhost:8990/API/maintenance");
+      const res = await axios.get(url + "/API/maintenance");
       if (res.status == 200) {
         setDataMaintenance(res.data);
       }
     }
+    setCard(
+      "card1  bg-gray-900/10 h-fit w-80 flex flex-col items-start gap-3 justify-start border border-amber-50/10 rounded-sm"
+    );
     fetchdata();
   }, [Reloaders]);
   return (
     <>
-      <div className="absolute inset-0 h-[100%] text-[0.8rem] bg-gray-900/10 text-neutral-50 font-mono font-medium ml-13 items-center justify-center flex flex-row gap-10">
+      {/* "card1  bg-gray-900/10 h-fit w-80 flex flex-col items-start gap-3 justify-start border border-amber-50/10 rounded-sm" */}
+      <div className="absolute max-sm:relative inset-0 h-[100%] max-sm:flex-col text-[0.8rem] bg-gray-900/10 text-neutral-50 font-mono font-medium ml-13 items-center justify-center flex flex-row gap-10">
+        {Camstate ? (
+          <CAMERAS state={setCamstate} showcard={setCard} id={IDs} />
+        ) : null}
         {DataMaintenance
           ? Object.entries(DataMaintenance).map(([id, values]) => {
               const [name, unit, location] = values;
               Note[id] = "";
               return (
                 <>
-                  <div
-                    className="card1 bg-gray-900/10 h-fit w-80 flex flex-col items-start gap-3 justify-start border border-amber-50/10 rounded-sm"
-                    key={id}
-                  >
-                    <span className="bg-purple-300 text-white h-10 w-full rounded-t-sm text-center content-center font-bold text-lg">
+                  <div className={Card} key={id}>
+                    <span
+                      className="bg-purple-300 text-white h-10 w-full rounded-t-sm text-center content-center font-bold text-lg cursor-context-menu"
+                      onClick={() => navigate("/detail/" + id)}
+                    >
                       {id}
                     </span>
                     <div className="grid grid-cols-[auto_1rem_1fr] gap-x-2 px-1 font-bold ">
@@ -61,26 +80,22 @@ function MAINTENANCE_SCHEDULE() {
                       id=""
                     ></textarea>
 
-                    <div className="navigate w-full flex items-center justify-evenly pb-2">
-                      <div
-                        className="h-12 w-[30%] border-1 border-red-300 rounded-sm bg-gray-900/84 hover:bg-gray-900/90 active:bg-gray-500 font-extralight text-red-300 text-[1rem] flex items-center justify-center"
-                        onClick={() => console.log("yey")}
-                      >
+                    <div className="navigate w-full flex items-center justify-evenly pb-2 cursor-pointer">
+                      {/* <div className="h-12 w-[30%] border-1 border-red-300 hover:border-red-400 hover:text-red-400 hover:bg-gray-900/10 rounded-sm bg-gray-900/84  active:bg-gray-500 font-extralight text-red-300  text-[1rem] flex items-center justify-center">
                         CANCEL
-                      </div>
+                      </div> */}
                       <div
-                        className="h-12 w-[30%] border-1 border-blue-300 rounded-sm bg-gray-900/84 hover:bg-gray-900/90 active:bg-gray-500 font-extralight text-blue-300 text-[1rem] flex items-center justify-center"
-                        onClick={() => console.log("yey")}
+                        className="cursor-pointer h-12 w-[30%] border-1 border-blue-300 rounded-sm bg-gray-900/84 hover:border-blue-400 hover:text-blue-400 hover:bg-gray-900/10 active:bg-gray-500 font-extralight text-blue-300 text-[1rem] flex items-center justify-center"
+                        onClick={() => {
+                          setIDs(id);
+                          setCard("hidden");
+                          setCamstate(true);
+                        }}
                       >
-                        <FontAwesomeIcon
-                          icon={faCamera}
-                          size="xl"
-                          className="hover:text-purple-400"
-                          onClick={() => {}}
-                        />
+                        <FontAwesomeIcon icon={faCamera} size="xl" />
                       </div>
                       <div
-                        className="h-12 w-[30%] border-1 border-green-300 rounded-sm bg-gray-900/84 hover:bg-gray-900/90 active:bg-gray-500 font-extralight text-green-300 text-[1rem] flex items-center justify-center"
+                        className="cursor-pointer h-12 w-[30%] border-1 border-green-300 rounded-sm bg-gray-900/84 hover:border-green-400 hover:text-green-400 hover:bg-gray-900/10 active:bg-gray-500 font-extralight text-green-300 text-[1rem] flex items-center justify-center"
                         onClick={() => sendData(id, Note[id])}
                       >
                         SUBMIT
