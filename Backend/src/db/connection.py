@@ -17,7 +17,7 @@ url = URL.create(
     password=PASSWORD,
     host=DB_HOST,
     port=3306,
-    database=DB_NAME,
+    database="db_inventory",
 )
 engine = create_engine(
     url,

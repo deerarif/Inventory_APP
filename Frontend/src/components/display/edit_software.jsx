@@ -30,7 +30,7 @@ function EDITSOFTWARE(props) {
   return (
     <>
       <div className="fixed flex inset-0 bg-black/90 justify-center z-50 pt-50 cursor-default">
-        <div className="h-fit w-[30%] rounded-sm bg-gray-950 flex justify-center">
+        <div className="h-fit w-[30%] rounded-sm bg-gray-950 flex justify-center max-sm:w-fit">
           <form action="" className=" flex flex-col p-2 gap-2 w-full">
             <span className="font-mono text-amber-50 text-[0.8rem]">Name</span>
             <input

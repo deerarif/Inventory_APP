@@ -4,6 +4,7 @@ from method.inventory import retrive_all, add_inv, update_inv, retrive_one, del_
 from method.software import retrive_soft, add_soft, rem_soft
 from method.maintenance import get_data, add_maintenance, make_schedule, del_schedule
 from method.dashboard import dashboard
+from method.notes import hit_the_notes
 import os
 from datetime import datetime
 from flask_cors import CORS, cross_origin
@@ -167,10 +168,24 @@ def maintenance_add():
         return "error\n", 500
 
 
+# Route for dashboard
 @app.route("/API/dashboard", methods=["GET"])
 def dashboard_panels():
     try:
         data = dashboard()
+        return jsonify(data), 200
+    except Exception as err:
+        print(err)
+        return "error\n", 500
+
+
+# Route For Note to get the lastest Notes
+@app.route("/API/note/<string:barcode>", methods=["GET"])
+def get_note(barcode):
+    try:
+        data = hit_the_notes(barcode)
+        if len(data) <= 0:
+            return "None\n", 404
         return jsonify(data), 200
     except Exception as err:
         print(err)

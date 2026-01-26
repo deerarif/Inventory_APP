@@ -8,7 +8,7 @@ import MAINTENANCE_SCHEDULE from "./components/maintenance/schedule";
 import DISPLAY from "./components/display/show";
 import ADDNEWDEVICE from "./components/display/anddnew";
 import CAMERAS from "./components/maintenance/camera";
-
+import SCAN_BARCODE from "./components/scan_assets/scan";
 function App() {
   return (
     <>
@@ -22,6 +22,7 @@ function App() {
           <Route path="/detail/:id" element={<DISPLAY />} />
           <Route path="/maintenance" element={<MAINTENANCE_SCHEDULE />} />
           <Route path="/cam" element={<CAMERAS />} />
+          <Route path="/scan" element={<SCAN_BARCODE />} />
         </Routes>
       </BrowserRouter>
     </>

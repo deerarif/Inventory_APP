@@ -23,14 +23,14 @@ function EDITDATA(props) {
   return (
     <>
       <div
-        id="Test1"
-        className="fixed flex inset-0 bg-black/90 justify-center  items-center z-50 cursor-default p-10"
+        id="edit_data"
+        className="fixed flex inset-0 bg-black/90 max-sm:bg-black justify-center items-center z-50 cursor-default p-10 max-sm:p-0"
       >
-        <div className="h-fit w-[70%] bg-gray-950 rounded-sm flex items-center gap-3">
-          <div className="box1 text-white/90 flex font-bold w-full h-fit">
+        <div className="h-fit w-[70%] max-sm:h-auto max-sm:max-h-full max-sm:relative bg-gray-950 rounded-sm flex max-sm:overflow-y-auto items-center max-sm:flex-col max-sm:w-full gap-3">
+          <div className="box1 text-white/90 flex font-bold w-full h-fit max-sm:flex-col">
             <form
               action=""
-              className="flex flex-row gap-5 w-full h-full items-center p-10"
+              className="flex flex-row max-sm:flex-col gap-5 w-full h-full items-center p-10"
             >
               <div className="flex flex-col gap-2 w-full">
                 <span className="font-serif font-bold">Nama</span>
@@ -59,6 +59,7 @@ function EDITDATA(props) {
                   type="text"
                   placeholder={props.DataInventory.ID}
                   className="bg-gray-700/50 px-2 font-light h-10 rounded-sm"
+                  onChange={(e) => handleInput(e, "ID")}
                 />
                 <span className="font-serif font-bold">Lokasi</span>
                 <input
@@ -172,9 +173,9 @@ function EDITDATA(props) {
             </form>
 
             {/* Button column */}
-            <div className="btn flex flex-col justify-between mb-10 mt-10 mr-3">
+            <div className="btn flex max-sm:w-auto flex-col max-sm:px-5 justify-between max-sm:justify-center mb-10 mt-10 mr-3 max-sm:gap-2 max-sm:m-0">
               <div
-                className="h-10 mt-8 px-3 border border-red-300 rounded-sm bg-gray-900/84 hover:bg-gray-900/90 active:bg-gray-500 font-extralight text-red-300 text-[1rem] flex items-center justify-center"
+                className="h-10 mt-8 max-sm:mt-0 max-sm:m-0 px-3 border border-red-300 rounded-sm bg-gray-900/84 hover:bg-gray-900/90 active:bg-gray-500 font-extralight text-red-300 text-[1rem] flex items-center justify-center"
                 onClick={() => props.setEditdata(false)}
               >
                 CANCEL
@@ -190,7 +191,7 @@ function EDITDATA(props) {
                     Form_data,
                     props.id,
                     props.setReload,
-                    props.setEditdata
+                    props.setEditdata,
                   );
                   // console.log(Form_data);
                 }}

@@ -11,6 +11,7 @@ from method.documents import add_docs
 from method.documents import retrive_docs, rem_docs
 from method.software import rem_soft, add_soft, retrive_soft
 from method.dashboard import dashboard, get_sinsur_data
+from method.notes import hit_the_notes
 
 # from method.maintenance import get_data, add_maintenance, make_schedule, del_schedule
 from method.maintenance import add_maintenance
@@ -68,7 +69,7 @@ def make_fake_data(labels):
 
 maintenance_data = {"id": "173283", "Note": ""}
 
-print(dashboard())
+# print(dashboard())
 
 # add_maintenance(maintenance_data)
 # del_schedule("NL-467")
@@ -96,7 +97,7 @@ print(dashboard())
 # retrive_soft("00000")
 # rem_soft(1, "2222222")
 # del_inv("00000")
-
+hit_the_notes("NL-21")
 
 # from datetime import datetime
 
@@ -166,9 +167,9 @@ print(dashboard())
 #     # if data[i]["Barcode"] in labels:
 #     #     print(data[i]["Barcode"])
 #     # labels.append(data[i]["Barcode"])
-#     # for filter_1 in data_new:
-#     #     if type(data_new[filter_1]) is float:
-#     #         data_new[filter_1] = ""
-#     # add_inv(data_new)
+#     for filter_1 in data_new:
+#         if type(data_new[filter_1]) is float:
+#             data_new[filter_1] = ""
+#     add_inv(data_new)
 #     # print(data_new)
 # # retrive_all()

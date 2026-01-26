@@ -147,6 +147,7 @@ def add_inv(data):
 # edit inventory
 def update_inv(data, data_ids):
     stmt = update(Assets).where(Assets.ID == data_ids).values(**data)
+    print(data_ids)
     db_session.execute(stmt)
     db_session.commit()
 

@@ -19,7 +19,7 @@ function DISPLAY(props) {
   async function handle_delete(label, soft_id) {
     try {
       const res = await axios.delete(
-        url + "/API/software/" + label + "/" + soft_id
+        url + "/API/software/" + label + "/" + soft_id,
       );
       const timestamp = Date.now();
 
@@ -73,7 +73,7 @@ function DISPLAY(props) {
     <>
       {/* <EDITSOFTWARE /> */}
       {/* <div className="absolute max-sm:relative inset-0 text-[0.8rem] text-neutral-50 font-mono font-medium max-sm:flex-col left-15 right-5 flex justify-center max-sm:overflow-hidden"> */}
-      <div className="absolute max-sm:relative inset-0 h-[100%] max-sm:flex-col text-[0.8rem] bg-gray-900/10 text-neutral-50 font-mono font-medium ml-13 items-center justify-center flex flex-row gap-10">
+      <div className="absolute max-sm:relative inset-0 max-sm:pb-10 h-[100%] max-sm:flex-col text-[0.8rem] bg-gray-900/10 text-neutral-50 font-mono font-medium ml-13 items-center justify-center flex flex-row gap-10">
         <div className="rounded-[5px] bg-gray-950/30 min-w-430 max-sm:min-w-0 max-sm:w-full absolute max-sm:relative top-5 flex flex-row max-sm:flex-col p-10 gap-10">
           <label
             className="media w-[30%] bg-gray-700/50 h-80 rounded-sm p-10 hover:opacity-60 cursor-pointer max-sm:w-[100%]"
@@ -182,6 +182,15 @@ function DISPLAY(props) {
                   <td className="font-semibold">Status</td>
                   <td>{DataInventory ? ": " + DataInventory.Status : ""}</td>
                 </tr>
+                <tr>
+                  <td className="font-semibold">Note</td>
+                  <td>
+                    : Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                    Error, magnam enim minus ullam reprehenderit voluptatibus
+                    nulla obcaecati sequi aperiam modi ipsa, mollitia harum cum
+                    veritatis est, laboriosam illum temporibus hic.
+                  </td>
+                </tr>
               </table>
             </div>
             <div className="softwaretable text-sm pt-5">
@@ -246,7 +255,7 @@ function DISPLAY(props) {
               </table>
             </div>
             <div className="controllbtn flex flex-row max-sm:flex-col max-sm:gap-2 w-full justify-between pt-10 cursor-default">
-              <div className="editbtn flex flex-row gap-3">
+              <div className="editbtn flex flex-row max-sm:flex-col gap-3">
                 <div
                   className="h-10 w-auto px-3 border-1 border-green-300 rounded-sm bg-gray-900/84  hover:bg-gray-900/10 active:bg-gray-500 font-extralight text-green-300 hover:text-green-300/80 text-[1rem] flex items-center justify-center"
                   onClick={() => setEditdata(true)}
@@ -261,7 +270,7 @@ function DISPLAY(props) {
                 </div>
               </div>
               <div className="exitbtn " onClick={() => navigate("/")}>
-                <div className="max-sm:w-fit h-10 w-auto px-3 border-1 border-red-300  rounded-sm bg-gray-900/84 hover:bg-gray-900/10 active:bg-gray-500 font-extralight text-red-300 text-[1rem] flex items-center justify-center">
+                <div className="max-sm:w-auto h-10 w-auto px-3 border-1 border-red-300  rounded-sm bg-gray-900/84 hover:bg-gray-900/10 active:bg-gray-500 font-extralight text-red-300 text-[1rem] flex items-center justify-center">
                   Exit
                 </div>
               </div>

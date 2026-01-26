@@ -4,6 +4,7 @@ import {
   faFileCirclePlus,
   faRightFromBracket,
   faNoteSticky,
+  faBarcode,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useNavigate } from "react-router-dom";
@@ -84,8 +85,25 @@ function SideBar() {
             }}
           />
         </div>
+        <div
+          className={
+            Menu === "maintenance"
+              ? "assset size-13 content-center text-center border-y-2"
+              : "assset size-13 content-center text-center "
+          }
+        >
+          <FontAwesomeIcon
+            icon={faBarcode}
+            size="xl"
+            className="hover:text-purple-400"
+            onClick={() => {
+              navigate("/scan");
+              setMenu("scan");
+            }}
+          />
+        </div>
       </div>
-      <div className="exit size-13 content-center text-center text-purple-300 absolute bottom-10 max-sm:top-0">
+      {/* <div className="exit size-13 content-center text-center text-purple-300 absolute bottom-10 max-sm:top-0">
         <FontAwesomeIcon
           icon={faRightFromBracket}
           size="xl"
@@ -95,7 +113,7 @@ function SideBar() {
             setMenu(null);
           }}
         />
-      </div>
+      </div> */}
     </div>
   );
 }
