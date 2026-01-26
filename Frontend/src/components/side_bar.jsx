@@ -68,7 +68,7 @@ function SideBar() {
             }}
           />
         </div>
-        <div
+        {/* <div
           className={
             Menu === "maintenance"
               ? "assset size-13 content-center text-center border-y-2"
@@ -84,7 +84,7 @@ function SideBar() {
               setMenu("maintenance");
             }}
           />
-        </div>
+        </div> */}
         <div
           className={
             Menu === "maintenance"

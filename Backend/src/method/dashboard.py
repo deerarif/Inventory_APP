@@ -107,7 +107,7 @@ def get_sinsur_data():
     try:
         res = req.get(
             f"{SINSUR_HOST}/Api/get?startDate={first_day.isoformat(timespec="seconds")}&endDate={now.isoformat(timespec="seconds")}",
-            timeout=1.5,
+            timeout=1,
         )
         datasinsur = process_sensor_data(res.json())
         return {

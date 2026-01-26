@@ -182,7 +182,8 @@ function DISPLAY(props) {
                   <td className="font-semibold">Status</td>
                   <td>{DataInventory ? ": " + DataInventory.Status : ""}</td>
                 </tr>
-                <tr>
+                {/* <tr>
+                  This Part is for note i probaly dont needed cuz i have 
                   <td className="font-semibold">Note</td>
                   <td>
                     : Lorem ipsum dolor sit amet, consectetur adipisicing elit.
@@ -190,7 +191,7 @@ function DISPLAY(props) {
                     nulla obcaecati sequi aperiam modi ipsa, mollitia harum cum
                     veritatis est, laboriosam illum temporibus hic.
                   </td>
-                </tr>
+                </tr> */}
               </table>
             </div>
             <div className="softwaretable text-sm pt-5">

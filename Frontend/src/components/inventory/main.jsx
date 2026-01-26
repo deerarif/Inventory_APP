@@ -32,8 +32,8 @@ function INVENTROY() {
 
     return data.filter((obj) =>
       Object.values(obj).some((value) =>
-        String(value).toLowerCase().includes(keyword)
-      )
+        String(value).toLowerCase().includes(keyword),
+      ),
     );
   }
   const filteredInventory = useMemo(() => {
@@ -54,7 +54,8 @@ function INVENTROY() {
     await axios
       .get(url + "/API/inventory/")
       .then((res) => {
-        setInventory_data(res.data);
+        // setInventory_data(res.data);
+        localStorage.setItem("Assets_data", JSON.stringify(res.data));
         res.data.map((data) => {
           if (data.Status === "Aktif") {
             DataHeaderSementara.Aktif++;
@@ -76,6 +77,7 @@ function INVENTROY() {
           }
         });
         setDataHeader(DataHeaderSementara);
+        setReloadtry("Again");
       })
       .catch((err) => console.log(err));
   }
@@ -87,7 +89,29 @@ function INVENTROY() {
     }
   };
   useEffect(() => {
-    loadData();
+    const items = JSON.parse(localStorage.getItem("Assets_data"));
+
+    if (items) {
+      setInventory_data(items);
+      loadData();
+    } else {
+      const timeoutId = setTimeout(() => {
+        const newItems = JSON.parse(localStorage.getItem("Assets_data"));
+        if (!newItems) {
+          // alert("Something went wrong. Unable to load data.");
+        }
+      }, 5000);
+
+      loadData().then(() => {
+        const newItems = JSON.parse(localStorage.getItem("Assets_data"));
+        if (newItems) {
+          setInventory_data(newItems);
+          clearTimeout(timeoutId);
+        }
+      });
+
+      return () => clearTimeout(timeoutId);
+    }
   }, [Reloadtry]);
   return (
     <>
@@ -152,6 +176,12 @@ function INVENTROY() {
                 icon={faPlusCircle}
                 size="xl"
                 className="hover:text-gray-200"
+                onClick={() => {
+                  const items = JSON.parse(localStorage.getItem("Assets_data"));
+                  if (items) {
+                    console.log(items);
+                  }
+                }}
               />
             </div> */}
             <div

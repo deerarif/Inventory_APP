@@ -31,7 +31,7 @@ function THETABLE(props) {
   async function handle_delete_docs(label, docs_id) {
     try {
       const res = await axios.delete(
-        url + "/API/documents/" + label + "/" + docs_id
+        url + "/API/documents/" + label + "/" + docs_id,
       );
       const timestamp = Date.now();
 
@@ -246,7 +246,7 @@ function THETABLE(props) {
                 <td>
                   <div
                     className={`category h-5 w-fit px-1 text-center content-center rounded-2xl ${StatusColor(
-                      data.Status
+                      data.Status,
                     )}`}
                   >
                     <span>{data.Status}</span>
@@ -327,8 +327,11 @@ function THETABLE(props) {
             </React.Fragment>
           ))
         ) : (
-          <div className="size-[100%] absolute flex items-center justify-center">
-            <img src={LOADING} className="size-[50%] object-contain" />
+          <div className="size-[100%] absolute flex items-center justify-center max-sm:w-max max-sm:h-screen max-sm:overflow-hidden ">
+            <img
+              src={LOADING}
+              className="size-[50%] object-contain max-sm:size-160"
+            />
           </div>
         )}
       </table>

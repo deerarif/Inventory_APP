@@ -22,34 +22,34 @@ function Dashboard() {
     <>
       {/* <Manitenance_Charts /> */}
       <div className="absolute inset-0 ml-13 max-sm:relative">
-        <div className=" absolute max-sm:relative left-12 top-10 grid  grid-cols-4 max-sm:grid-rows-4 gap-x-15 gap-y-14">
-          <div className="chart1 col-span-2 max-sm:row-span-2 h-100 w-209 max-sm:w-fit">
+        <div className="absolute max-sm:relative left-12 max-sm:left-0 top-10 flex flex-wrap gap-x-15 gap-y-14">
+          <div className="chart1 h-100 w-209 max-sm:w-dvh flex-shrink-0">
             <Manitenance_Charts
               Data={
                 Data_Dahsboard ? Data_Dahsboard["Maintennace Index Data"] : ""
               }
             />
           </div>
-          <div className="chart1 col-span-2 max-sm:row-span-2 h-100 w-213">
+          <div className="chart1 h-100 w-213 flex-shrink-0">
             <Suhu_Chart Data={Data_Dahsboard ? Data_Dahsboard["Sinsur"] : ""} />
           </div>
-          <div className="chart1 h-90 w-95  content-center">
+          <div className="chart1 h-90 w-95 content-center flex-shrink-0 max-sm:w-dvh max-sm:flex max-sm:justify-center">
             <Total_aset
               Data={Data_Dahsboard ? Data_Dahsboard["Statistik_Asset"] : ""}
             />
           </div>
-          <div className="chart1 h-90 w-95  content-center">
+          <div className="chart1 h-90 w-95 content-center max-sm:w-dvh max-sm:flex max-sm:justify-center flex-shrink-0">
             <Status_Assets
               Data={Data_Dahsboard ? Data_Dahsboard["Statistik_Status"] : ""}
             />
           </div>
-          <div className="chart1 col-span-2 max-sm:row-span-2 h-90 w-213 flex justify-center content-center">
+          {/* <div className="chart1 h-90 w-213 flex justify-center content-center flex-shrink-0">
             <Status_Maintenance
               Data={
                 Data_Dahsboard ? Data_Dahsboard["Maintennace Progress"] : ""
               }
             />
-          </div>
+          </div> */}
         </div>
       </div>
     </>

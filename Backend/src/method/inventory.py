@@ -59,9 +59,12 @@ def data_verify(data):
 # function get all inventory data
 def retrive_all():
     # result = db_session.query(Assets).all()
-    result = db_session.query(Assets).order_by(asc(Assets.Lokasi)).all()
-    # print(type({"data": result}))
-    return process_data(result)
+    try:
+        result = db_session.query(Assets).order_by(asc(Assets.Lokasi)).all()
+        # print(type({"data": result}))
+        return process_data(result)
+    except Exception:
+        db_session.rollback()
 
 
 # get only one detail of data
