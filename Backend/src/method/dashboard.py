@@ -138,4 +138,5 @@ def dashboard():
         final_data.update({"Sinsur": sinsur})
         return final_data
     except:
+        db_session.rollback()
         return "error"
