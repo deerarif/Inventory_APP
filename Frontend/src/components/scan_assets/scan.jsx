@@ -1,10 +1,12 @@
 import React, { useEffect, useRef } from "react";
 import { BrowserMultiFormatReader } from "@zxing/browser";
 import { useNavigate } from "react-router-dom";
+
 function SCAN_BARCODE(props) {
   const videoRef = useRef(null);
   const codeReader = useRef(null);
   const navigate = useNavigate();
+
   useEffect(() => {
     codeReader.current = new BrowserMultiFormatReader();
 
@@ -28,6 +30,12 @@ function SCAN_BARCODE(props) {
           videoRef.current,
           (result, error) => {
             if (result) {
+              // Stop camera before navigating
+              if (videoRef.current && videoRef.current.srcObject) {
+                videoRef.current.srcObject
+                  .getTracks()
+                  .forEach((track) => track.stop());
+              }
               navigate("/detail/" + result.getText());
             }
           },
@@ -37,16 +45,19 @@ function SCAN_BARCODE(props) {
         console.error("Failed to start camera:", err);
       });
 
-    // return () => {
-    // if (result && !scannedRef.current) {
-    //   scannedRef.current = true;
-    //   alert(result.getText());
-    // }
-    // if (videoRef.current && videoRef.current.srcObject) {
-    //   videoRef.current.srcObject.getTracks().forEach((track) => track.stop());
-    // }
-    // };
+    return () => {
+      if (videoRef.current && videoRef.current.srcObject) {
+        videoRef.current.srcObject.getTracks().forEach((track) => track.stop());
+      }
+    };
   }, []);
+
+  const handleBack = () => {
+    if (videoRef.current && videoRef.current.srcObject) {
+      videoRef.current.srcObject.getTracks().forEach((track) => track.stop());
+    }
+    navigate(-1);
+  };
 
   return (
     <>
@@ -58,7 +69,7 @@ function SCAN_BARCODE(props) {
         </div>
         <div
           className="h-10 w-50 mt-8 max-sm:mt-0 max-sm:m-0 px-3 border border-red-300 rounded-sm bg-gray-900/84 hover:bg-gray-900/90 active:bg-gray-500 font-extralight text-red-300 text-[1rem] flex items-center justify-center"
-          onClick={() => navigate("/")}
+          onClick={handleBack}
         >
           BACK
         </div>

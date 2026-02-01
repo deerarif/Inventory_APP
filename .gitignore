@@ -6,3 +6,4 @@ Backend/bin
 __pycache__
 __init__.py
 test.py
+Frontend/dist
