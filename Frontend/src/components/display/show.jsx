@@ -113,6 +113,12 @@ function DISPLAY(props) {
                   <td>{DataInventory ? ": " + DataInventory.Nama : ""}</td>
                 </tr>
                 <tr>
+                  <td className="font-semibold">Nomer Seri</td>
+                  <td>
+                    {DataInventory ? ": " + DataInventory.Searial_Num : ""}
+                  </td>
+                </tr>
+                <tr>
                   <td className="font-semibold">No. Barcode</td>
                   <td>{": " + id}</td>
                 </tr>
@@ -136,6 +142,7 @@ function DISPLAY(props) {
                   <td className="font-semibold">Processor</td>
                   <td>{DataInventory ? ": " + DataInventory.CPU : ""}</td>
                 </tr>
+
                 <tr>
                   <td className="font-semibold">RAM</td>
                   <td>{DataInventory ? ": " + DataInventory.RAM : ""}</td>
@@ -173,10 +180,10 @@ function DISPLAY(props) {
                   <td className="font-semibold">Tahun Pengadaan</td>
                   <td>{DataInventory ? ": " + DataInventory.Dates : ""}</td>
                 </tr>
-                <tr>
+                {/* <tr>
                   <td className="font-semibold">Last Maintenance</td>
                   <td>{DataInventory ? ": " + DataInventory.Note : "None"}</td>
-                </tr>
+                </tr> */}
 
                 <tr>
                   <td className="font-semibold">Status</td>
