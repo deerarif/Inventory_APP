@@ -87,7 +87,7 @@ maintenance_data = {"id": "173283", "Note": ""}
 #     add_soft(data[2])
 # add_docs(data_docs)
 # print(os.getenv("TEST"))
-# retrive_all()
+retrive_all()
 # rem_docs(1, "7812632")
 # update_inv(data)
 # retrive_docs("' OR '1'='1")
@@ -97,7 +97,7 @@ maintenance_data = {"id": "173283", "Note": ""}
 # retrive_soft("00000")
 # rem_soft(1, "2222222")
 # del_inv("00000")
-hit_the_notes("NL-21")
+# hit_the_notes("NL-21")
 
 # from datetime import datetime
 

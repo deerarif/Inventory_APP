@@ -61,7 +61,8 @@ def retrive_all():
     # result = db_session.query(Assets).all()
     try:
         result = db_session.query(Assets).order_by(asc(Assets.Lokasi)).all()
-        # print(type({"data": result}))
+        print(type({"data": result}))
+        # print(process_data(result))
         return process_data(result)
     except Exception:
         db_session.rollback()
