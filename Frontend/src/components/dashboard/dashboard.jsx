@@ -21,35 +21,30 @@ function Dashboard() {
   return (
     <>
       {/* <Manitenance_Charts /> */}
-      <div className="absolute inset-0 ml-13 max-sm:relative">
-        <div className="absolute max-sm:relative left-12 max-sm:left-0 top-10 flex flex-wrap gap-x-15 gap-y-14">
-          <div className="chart1 h-100 w-209 max-sm:w-dvh flex-shrink-0">
-            <Manitenance_Charts
-              Data={
-                Data_Dahsboard ? Data_Dahsboard["Maintennace Index Data"] : ""
-              }
-            />
-          </div>
-          <div className="chart1 h-100 w-213 flex-shrink-0">
+      <div className="ml-13 h-[calc(100vh-120px)] max-sm:h-auto">
+        <div className="grid grid-cols-2 grid-rows-2 gap-6 h-full max-sm:grid-cols-1 max-sm:grid-rows-none px-10">
+          {/* TOP LEFT */}
+          <div className="bg-transparent h-full">
             <Suhu_Chart Data={Data_Dahsboard ? Data_Dahsboard["Sinsur"] : ""} />
           </div>
-          <div className="chart1 h-90 w-95 content-center flex-shrink-0 max-sm:w-dvh max-sm:flex max-sm:justify-center">
-            <Total_aset
-              Data={Data_Dahsboard ? Data_Dahsboard["Statistik_Asset"] : ""}
-            />
+
+          {/* RIGHT (SPAN 2 ROWS) */}
+          <div className="row-span-2 flex items-center justify-center pt-10">
+            <div className="w-full h-full flex justify-center aspect-square">
+              <Total_aset
+                Data={Data_Dahsboard ? Data_Dahsboard["Statistik_Asset"] : ""}
+              />
+            </div>
           </div>
-          <div className="chart1 h-90 w-95 content-center max-sm:w-dvh max-sm:flex max-sm:justify-center flex-shrink-0">
-            <Status_Assets
-              Data={Data_Dahsboard ? Data_Dahsboard["Statistik_Status"] : ""}
-            />
+
+          {/* BOTTOM LEFT */}
+          <div className="flex h-full items-cente justify-center">
+            <div className="w-full max-w-[350px] aspect-square">
+              <Status_Assets
+                Data={Data_Dahsboard ? Data_Dahsboard["Statistik_Status"] : ""}
+              />
+            </div>
           </div>
-          {/* <div className="chart1 h-90 w-213 flex justify-center content-center flex-shrink-0">
-            <Status_Maintenance
-              Data={
-                Data_Dahsboard ? Data_Dahsboard["Maintennace Progress"] : ""
-              }
-            />
-          </div> */}
         </div>
       </div>
     </>

@@ -13,6 +13,7 @@ function ADDNEWDEVICE() {
         navigate("/detail/" + data_form.ID);
       }
     } catch (err) {
+      alert(err + "\nCheck For Duplicate Barcode/ID");
       console.log(err);
     }
   }
@@ -113,7 +114,12 @@ function ADDNEWDEVICE() {
                     className="bg-gray-700/50 px-3 max-sm:px-2 font-light h-10 max-sm:h-12 rounded-sm hover:bg-gray-600 focus:outline-0 focus:ring-0 max-sm:text-base"
                     onChange={(e) => handleInput(e, "CPU")}
                   />
-
+                  <input
+                    type="text"
+                    placeholder="RAM"
+                    className="bg-gray-700/50 px-3 max-sm:px-2 font-light h-10 max-sm:h-12 rounded-sm hover:bg-gray-600 focus:outline-0 focus:ring-0 max-sm:text-base"
+                    onChange={(e) => handleInput(e, "RAM")}
+                  />
                   <input
                     type="text"
                     placeholder="Operating System"
@@ -137,7 +143,12 @@ function ADDNEWDEVICE() {
                     className="bg-gray-700/50 px-3 max-sm:px-2 font-light h-10 max-sm:h-12 rounded-sm hover:bg-gray-600 focus:outline-0 focus:ring-0 max-sm:text-base"
                     onChange={(e) => handleInput(e, "User")}
                   />
-
+                  <input
+                    type="text"
+                    placeholder="Unit"
+                    className="bg-gray-700/50 px-3 max-sm:px-2 font-light h-10 max-sm:h-12 rounded-sm hover:bg-gray-600 focus:outline-0 focus:ring-0 max-sm:text-base"
+                    onChange={(e) => handleInput(e, "Unit")}
+                  />
                   <input
                     type="text"
                     placeholder="HDD"

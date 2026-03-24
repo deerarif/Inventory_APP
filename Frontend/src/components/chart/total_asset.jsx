@@ -44,7 +44,7 @@ export function Total_aset(props) {
       legend: {
         labels: {
           font: {
-            size: 10,
+            size: 15,
           },
         },
       },

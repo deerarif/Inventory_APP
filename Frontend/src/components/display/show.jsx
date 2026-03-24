@@ -248,7 +248,7 @@ function DISPLAY(props) {
                         </td>
                         <td className="font-light h-8 px-2 border-amber-50 border-1 content-center justify-center">
                           <a
-                            href={`${url}  + "/docs/${id}/${data[2]}`}
+                            href={`${url}/docs/${id}/${data[2]}`}
                             target="_blank"
                           >
                             {data[2]}

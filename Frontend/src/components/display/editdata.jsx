@@ -17,6 +17,7 @@ function EDITDATA(props) {
         close_windows(false);
       }
     } catch (err) {
+      alert(err + "\nCheck For Duplicate Barcode/ID");
       console.log(err);
     }
   }

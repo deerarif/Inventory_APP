@@ -14,7 +14,6 @@ export function Status_Assets(props) {
           "rgba(75, 192, 192, 0.25)",
           "rgba(54, 162, 235, 0.25)",
           "rgba(255, 99, 132, 0.25)",
-
           "rgba(255, 206, 86, 0.25)",
           "rgba(153, 102, 255, 0.25)",
           "rgba(255, 159, 64, 0.25)",
@@ -42,5 +41,16 @@ export function Status_Assets(props) {
       },
     ],
   };
-  return <Doughnut data={data} />;
+  const options = {
+    plugins: {
+      legend: {
+        labels: {
+          font: {
+            size: 15,
+          },
+        },
+      },
+    },
+  };
+  return <Doughnut data={data} options={options} />;
 }

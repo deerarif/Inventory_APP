@@ -47,7 +47,6 @@ def inventory_update(inv_id):
         update_inv(data, inv_id)
         return f"succes\n", 200
     except Exception as err:
-        print(err)
         return "error\n", 500
 
 
