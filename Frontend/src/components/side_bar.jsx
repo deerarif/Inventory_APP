@@ -2,7 +2,7 @@ import {
   faDesktop,
   faChartPie,
   faFileCirclePlus,
-  faRightFromBracket,
+  faShield,
   faNoteSticky,
   faBarcode,
 } from "@fortawesome/free-solid-svg-icons";
@@ -68,23 +68,23 @@ function SideBar() {
             }}
           />
         </div>
-        {/* <div
+        <div
           className={
-            Menu === "maintenance"
+            Menu === "antv"
               ? "assset size-13 content-center text-center border-y-2"
               : "assset size-13 content-center text-center "
           }
         >
           <FontAwesomeIcon
-            icon={faNoteSticky}
+            icon={faShield}
             size="xl"
             className="hover:text-purple-400"
             onClick={() => {
-              navigate("/maintenance");
-              setMenu("maintenance");
+              navigate("/antv");
+              setMenu("antv");
             }}
           />
-        </div> */}
+        </div>
         <div
           className={
             Menu === "maintenance"

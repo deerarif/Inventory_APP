@@ -1,43 +1,11 @@
 from sqlalchemy import select
 from db.connection import db_session
 from db.db_model import Assets
-from db.db_model import Note
 from datetime import datetime
 import requests as req
 import os
 
 SINSUR_HOST = os.getenv("SINSUR_HOST")
-
-
-# get add data from db
-def get_note_date_all():
-    try:
-        result = db_session.execute(select(Note.Last_Maintenance))
-        return result
-    except:
-        return "error"
-
-
-# process data check count january - Dec
-# also check how much data this and last year
-def process_note(data):
-    months = [0] * 12
-    sudah_maintenace = 0
-    belum_maintenace = 0
-    try:
-        for item in data:
-            date_obj = item[0]
-            if date_obj.year == datetime.now().year:
-                month_index = date_obj.month - 1
-                months[month_index] += 1
-                sudah_maintenace += 1
-            else:
-                belum_maintenace += 1
-        # return object data
-        final_data = [months, sudah_maintenace, belum_maintenace]
-        return final_data
-    except:
-        return "error process data"
 
 
 # count how many status and category
@@ -59,10 +27,8 @@ def inv_statics():
 # parse data make it object
 def parse_data(data: list):
     result = {
-        "Maintennace Index Data": data[0],
-        "Maintennace Progress": [data[1], data[2]],
-        "Statistik_Asset": data[3][0],
-        "Statistik_Status": data[3][1],
+        "Statistik_Asset": data[0][0],
+        "Statistik_Status": data[0][1],
     }
     return result
 
@@ -130,13 +96,13 @@ def get_sinsur_data():
 # ship the data to frontend this was hit method by route
 def dashboard():
     try:
-        data = get_note_date_all()
-        res = process_note(data)
+        res = []
         res.append(inv_statics())
         final_data = parse_data(res)
         sinsur = get_sinsur_data()
         final_data.update({"Sinsur": sinsur})
         return final_data
-    except:
+    except Exception as e:
+        print(e)
         db_session.rollback()
         return "error"

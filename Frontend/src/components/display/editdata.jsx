@@ -1,5 +1,6 @@
 import axios from "axios";
 import { data } from "react-router-dom";
+import React, { useState, useEffect } from "react";
 const url = import.meta.env.VITE_URL;
 function EDITDATA(props) {
   const Form_data = { ...props.DataInventory };
@@ -21,6 +22,25 @@ function EDITDATA(props) {
       console.log(err);
     }
   }
+  const [Antivirus_list, setAntivirus_list] = useState({});
+  async function get_antivirus(params) {
+    try {
+      const res = await axios.get(url + "/API/antv");
+      if (res.data.Status === 'Success'){
+        setAntivirus_list(res.data.Data)
+      }
+    }catch(err) {
+      alert("Failed get Antivirus Data");
+      console.log(err);
+    }
+  }
+    useEffect(() => {
+      // This code runs ONLY once, after the first render
+      get_antivirus();
+  
+      // Optional: Return a cleanup function
+      return () => setAntivirus_list({});
+    }, []);
   return (
     <>
       <div
@@ -120,13 +140,20 @@ function EDITDATA(props) {
                   className="bg-gray-700/50 px-2 font-light h-10 rounded-sm"
                   onChange={(e) => handleInput(e, "IP")}
                 />
-                <span className="font-serif font-bold">Kaspersky</span>
-                <input
-                  type="text"
-                  placeholder={props.DataInventory.KIS}
-                  className="bg-gray-700/50 px-2 font-light h-10 rounded-sm"
-                  onChange={(e) => handleInput(e, "KIS")}
-                />
+                <span className="font-serif font-bold">Antivirus</span>
+                  <select
+                    id="KIS"
+                    className="block w-full bg-gray-700/50 px-3 max-sm:px-2 font-light h-10 max-sm:h-12 hover:bg-gray-700/60 focus:outline-0 focus:ring-0 text-sm max-sm:text-base rounded-sm shadow-xs"
+                    onChange={(e) => handleInput(e, "KIS")}
+                  >
+                    <option value="">KIS CODE</option>
+                    {Antivirus_list &&
+                      Object.keys(Antivirus_list).map((key) => (
+                        <option key={key} value={key}>
+                          {Antivirus_list[key]}
+                        </option>
+                      ))}
+                  </select>
                 <span className="font-serif font-bold">User</span>
                 <input
                   type="text"

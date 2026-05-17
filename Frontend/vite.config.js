@@ -7,11 +7,11 @@ export default defineConfig({
   plugins: [
     react(),
     tailwindcss(),
-    basicSsl()
+    // basicSsl()
   ],
   server: {
     host: true,
-    https: true,
+    // https: true,
     port: 3000,
   }
 })

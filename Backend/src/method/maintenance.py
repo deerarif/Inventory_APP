@@ -1,68 +1,67 @@
 from db.connection import db_session
-from db.db_model import Note, Assets
-from sqlalchemy import select, delete, func, extract, join
+from db.db_model import Assets
+from sqlalchemy import select, delete, func, extract, join, table, column, update
 import datetime
 import ast
 
 
-# functtion get 3 data from db
-# and add that into json file as chedule
-def make_schedule():
-    result = (
-        db_session.execute(
-            select(Assets)
-            .join(Note, Note.Owner_id == Assets.ID)
-            .where(func.year(Note.Last_Maintenance) < datetime.datetime.now().year)
-            .order_by(func.random())
-            .limit(3)
+def Change_Schelude(ID, NewID):
+    try:
+        maitenance_schedule = table(
+            "maintenance_schedule", column("id"), column("asset_id")
         )
-        .scalars()
-        .all()
-    )
-    if result:
-        data = {data.ID: [data.User, data.Unit, data.Lokasi] for data in result}
-        with open("db/schedule.json", "w") as f:
-            f.write(f"{data}")
-        return data
-
-
-# delete data
-def del_schedule(id):
-    try:
-        f = open("db/schedule.json", "r+")
-        data = ast.literal_eval(f.read())
-        print(data)
-        del data[id]
-        with open("db/schedule.json", "w") as f:
-            f.write(f"{data}")
-            return
+        select_query = select(maitenance_schedule).where(
+            maitenance_schedule.c.asset_id == ID
+        )
+        res = db_session.execute(select_query).all()
+        if res:
+            for i in res:
+                # print(i[0])
+                update_query = (
+                    update(maitenance_schedule)
+                    .where(maitenance_schedule.c.id == str(i[0]))
+                    .values(asset_id=NewID)
+                )
+                db_session.execute(update_query)
+                db_session.commit()
+            return {"Status": "Success"}
+        return {"Status": "Error"}
     except Exception as e:
         print(e)
-        return
+        return {"Status": "Error"}
 
 
-def add_maintenance(data):
+def Change_History(ID, NewID):
     try:
-        note = db_session.query(Note).filter_by(Owner_id=data["id"]).first()
-        if note:
-            note.Notes = data["Note"]
-            note.Last_Maintenance = datetime.datetime.now()
-        else:
-            note = Note(Owner_id=data["id"], Notes=data["Note"])
-            db_session.add(note)
-        db_session.commit()
-        del_schedule(data["id"])
+        maitenance_history = table(
+            "maintenance_history", column("id"), column("asset_id")
+        )
+        select_query = select(maitenance_history).where(
+            maitenance_history.c.asset_id == ID
+        )
+        res = db_session.execute(select_query).all()
+        if res:
+            for i in res:
+                # print(i[0])
+                update_query = (
+                    update(maitenance_history)
+                    .where(maitenance_history.c.id == str(i[0]))
+                    .values(asset_id=NewID)
+                )
+                db_session.execute(update_query)
+                db_session.commit()
+            return {"Status": "Success"}
+        return {"Status": "Error"}
     except Exception as e:
         print(e)
-        return
+        return {"Status": "Error"}
 
 
-# get 3 maintenance data from json file
-def get_data():
-    try:
-        f = open("db/schedule.json", "r")
-        data = ast.literal_eval(f.read())
-        return data
-    except Exception as e:
-        print(e)
-        return
+def Main(ID, NewID):
+    Schedule_Change_Status = Change_Schelude(ID, NewID)
+    Change_Maintenace_history_Status = Change_History(ID, NewID)
+    Status = {
+        "Jadwal": Schedule_Change_Status,
+        "History": Change_Maintenace_history_Status,
+    }
+    return Status

@@ -4,7 +4,6 @@ from sqlalchemy import create_engine, Column, Integer, String, Float, URL
 from sqlalchemy.orm import sessionmaker, declarative_base
 from db_model import Assets
 from db_model import Documents
-from db_model import Note
 from db_model import Base
 
 load_dotenv()
@@ -19,7 +18,7 @@ url = URL.create(
     password=PASSWORD,
     host=DB_HOST,
     port=3306,
-    database="",
+    database=DB_NAME,
 )
 engine = create_engine(
     url,

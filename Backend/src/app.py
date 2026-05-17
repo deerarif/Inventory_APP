@@ -2,9 +2,9 @@ from flask import Flask, request, jsonify
 from method.documents import retrive_docs, add_docs, rem_docs
 from method.inventory import retrive_all, add_inv, update_inv, retrive_one, del_inv
 from method.software import retrive_soft, add_soft, rem_soft
-from method.maintenance import get_data, add_maintenance, make_schedule, del_schedule
+from method.antivirus import get_antv_key, retive_all as antv_retrive, add_antv, get_available, retrive_users, update_user as update_user_antv
 from method.dashboard import dashboard
-from method.notes import hit_the_notes
+
 import os
 from datetime import datetime
 from flask_cors import CORS, cross_origin
@@ -16,7 +16,6 @@ app = Flask(__name__, static_folder=os.getenv("UPLOAD_FOLDER"), static_url_path=
 app.config["UPLOAD_FOLDER"] = os.getenv("UPLOAD_FOLDER")
 CORS(app)
 # Statics Route
-
 
 # Route all stuff with inventory
 @app.route("/API/inventory/", methods=["GET"])
@@ -44,8 +43,8 @@ def inventory_add():
 def inventory_update(inv_id):
     try:
         data = request.get_json()
-        update_inv(data, inv_id)
-        return f"succes\n", 200
+        res = update_inv(data, inv_id)
+        return f"{res}\n", 200
     except Exception as err:
         return "error\n", 500
 
@@ -136,37 +135,6 @@ def software_del(barcode, soft_id):
         return "error\n", 500
 
 
-# Route for Maintenance
-@app.route("/API/maintenance", methods=["GET"])
-def maintenance():
-    try:
-        return jsonify(get_data()), 200
-    except Exception as err:
-        print(err)
-        return "error\n", 500
-
-
-@app.route("/API/reset_maintenance", methods=["GET"])
-def make_schedules():
-    try:
-        make_schedule()
-        return jsonify(make_schedule()), 200
-    except Exception as err:
-        print(err)
-        return "error\n", 500
-
-
-@app.route("/API/maintenance", methods=["POST"])
-def maintenance_add():
-    try:
-        Note_data = request.get_json()
-        add_maintenance(Note_data)
-        return "succes\n", 200
-    except Exception as err:
-        print(err)
-        return "error\n", 500
-
-
 # Route for dashboard
 @app.route("/API/dashboard", methods=["GET"])
 def dashboard_panels():
@@ -177,19 +145,60 @@ def dashboard_panels():
         print(err)
         return "error\n", 500
 
-
-# Route For Note to get the lastest Notes
-@app.route("/API/note/<string:barcode>", methods=["GET"])
-def get_note(barcode):
+# Route all stuff with Antiviruses
+@app.route("/API/antv", methods=["GET"])
+def antv_get():
     try:
-        data = hit_the_notes(barcode)
-        if len(data) <= 0:
-            return "None\n", 404
+        data = get_available()
         return jsonify(data), 200
     except Exception as err:
         print(err)
         return "error\n", 500
 
+@app.route("/API/antv_all", methods=["GET"])
+def antv_get_all():
+    try:
+        data = antv_retrive()
+        return jsonify(data), 200
+    except Exception as err:
+        print(err)
+        return "error\n", 500
 
+@app.route("/API/antv_add/", methods=["POST"])
+def antv_add():
+    try:
+        data_antv = request.get_json()
+        add_antv([data_antv['ANTV_KEY'],data_antv['DATE']])
+        return "succes\n", 200
+    except Exception as err:
+        print(err)
+        return "error\n", 500
+
+@app.route("/API/antv/<string:antv_id>/", methods=["GET"])
+def get_ativirus_key(antv_id):
+    try:
+        data = get_antv_key(int(antv_id))
+        return jsonify(data), 200
+    except Exception as err:
+        print(err)
+        return "error\n", 500
+
+@app.route("/API/antv/<string:antv_id>/", methods=["UPDATE"])
+def update_antv_user(antv_id):
+    try:
+        data = update_user_antv(int(antv_id))
+        return "succes\n", 200
+    except Exception as err:
+        print(err)
+        return "error\n", 500
+
+@app.route("/API/antvusers/<string:antv_id>/", methods=["GET"])
+def get_antv_users(antv_id):
+    try:
+        data = retrive_users(int(antv_id))
+        return jsonify(data), 200
+    except Exception as err:
+        print(err)
+        return "error\n", 500
 if __name__ == "__main__":
     app.run(host="0.0.0.0", debug=True, port=8990)

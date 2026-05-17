@@ -14,6 +14,7 @@ function DISPLAY(props) {
   const [Editdata, setEditdata] = useState();
   const [EditSoft, setEditSoft] = useState();
   const [Reload, setReload] = useState();
+  const [KIS, setKIS] = useState();
   const [Profile, setProfile] = useState();
   const navigate = useNavigate();
   async function handle_delete(label, soft_id) {
@@ -27,6 +28,16 @@ function DISPLAY(props) {
         setReload(timestamp);
       }
     } catch (err) {
+      console.log(err);
+    }
+  }
+  async function get_KIS_Code(ids) {
+    try{
+      const res = await axios.get(url + "/API/antv/" + ids + "/");
+      if (res.data.Status === 'Success'){
+        setKIS(res.data.Data);
+      }
+    }catch (err) {
       console.log(err);
     }
   }
@@ -60,7 +71,13 @@ function DISPLAY(props) {
       try {
         const res = await axios.get(url + "/API/inventory/" + ids);
         if (res.status === 200) {
+          await get_KIS_Code(res.data.KIS);
           setDataInventory(res.data);
+          if (res.data === null) {
+            alert("Asset didn't Exist");
+            navigate("/");
+          }
+          // console.log(res.data);
         }
       } catch (err) {
         console.log(err);
@@ -166,7 +183,7 @@ function DISPLAY(props) {
 
                 <tr>
                   <td className="font-semibold">KIS Code</td>
-                  <td>{DataInventory ? ": " + DataInventory.KIS : ""}</td>
+                  <td onClick={() => navigate("/" + "antvshow/" + DataInventory.KIS)}>{DataInventory ? ": " + KIS : ""}</td>
                 </tr>
                 <tr>
                   <td className="font-semibold">User</td>

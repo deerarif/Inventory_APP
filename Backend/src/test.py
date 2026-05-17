@@ -10,11 +10,11 @@ from method.inventory import retrive_all, update_inv, retrive_one, del_inv
 from method.documents import add_docs
 from method.documents import retrive_docs, rem_docs
 from method.software import rem_soft, add_soft, retrive_soft
-from method.dashboard import dashboard, get_sinsur_data
-from method.notes import hit_the_notes
-
-# from method.maintenance import get_data, add_maintenance, make_schedule, del_schedule
-from method.maintenance import add_maintenance
+from method.dashboard import dashboard, get_sinsur_data, inv_statics
+from method.update_schedule import get_schedule,update_schedule,changes_history_id,get_history
+# from method.notes import hit_the_notes
+from method.maintenance import Main
+from method.antivirus import get_antv_key,retive_all as antv_retrive, add_antv, get_available,retrive_users, update_user
 
 load_dotenv()
 
@@ -69,8 +69,11 @@ def make_fake_data(labels):
 
 maintenance_data = {"id": "173283", "Note": ""}
 
-# print(dashboard())
-
+# print(update_schedule(['NL-48', '982173']))
+# print(changes_history_id('NL-48', '982173'))
+# print(get_history("NL-48"))
+# print(Change_Schelude("88888", "NL-112")["Status"])
+# print(Main("NL-363", "99999"))
 # add_maintenance(maintenance_data)
 # del_schedule("NL-467")
 # make_schedule()
@@ -87,12 +90,12 @@ maintenance_data = {"id": "173283", "Note": ""}
 #     add_soft(data[2])
 # add_docs(data_docs)
 # print(os.getenv("TEST"))
-retrive_all()
+# retrive_all()
 # rem_docs(1, "7812632")
 # update_inv(data)
 # retrive_docs("' OR '1'='1")
 # add_inv(data)
-# retrive_one("00000")
+# print(retrive_one("206760"))
 # add_soft(data_soft)
 # retrive_soft("00000")
 # rem_soft(1, "2222222")
@@ -172,4 +175,4 @@ retrive_all()
 #             data_new[filter_1] = ""
 #     add_inv(data_new)
 #     # print(data_new)
-# # retrive_all()
+print(retrive_users(3))

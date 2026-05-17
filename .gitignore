@@ -1,5 +1,7 @@
 Frontend/node_modules
 Backend/lib*
+Backend/bin
+Backend/bin*
 *__pycache__*
 */.env
 Backend/bin

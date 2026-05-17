@@ -3,11 +3,12 @@ from sqlalchemy import update, delete, asc
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from method.maintenance import add_maintenance
 from db.db_model import Assets
 from db.connection import db_session
 from datetime import datetime
-
+from method.maintenance import Main
+from method.update_schedule import update_schedule
+from method.antivirus import update_user as antv_updates
 
 def datetime_to_string(dt: datetime) -> str:
     return dt.strftime("%d-%m-%Y")
@@ -59,12 +60,14 @@ def data_verify(data):
 # function get all inventory data
 def retrive_all():
     # result = db_session.query(Assets).all()
+    
     try:
         result = db_session.query(Assets).order_by(asc(Assets.Lokasi)).all()
-        print(type({"data": result}))
+        # print(type({"data": result}))
         # print(process_data(result))
         return process_data(result)
-    except Exception:
+    except Exception as e:
+        print(e)
         db_session.rollback()
 
 
@@ -111,8 +114,6 @@ def retrive_one(inv_id):
                     )
                     for soft in result.Software
                 ],
-                # Add more data software and Note, this data will use in menu inventory
-                "Note": [(note.Last_Maintenance,) for note in result.Note],
             }
             return data
     except:
@@ -121,38 +122,60 @@ def retrive_one(inv_id):
 
 
 def add_inv(data):
-    add_data = Assets(
-        Nama=data["Nama"],
-        Desc=data["Desc"],
-        ID=data["ID"],
-        Searial_Num=data["Searial_Num"],
-        Lokasi=data["Lokasi"],
-        Category=data["Category"],
-        OS=data["OS"],
-        WIN_KEY=data["WIN_KEY"],
-        CPU=data["CPU"],
-        RAM=data["RAM"],
-        SSD=data["SSD"],
-        HDD=data["HDD"],
-        Mobo=data["Mobo"],
-        IP=data["IP"],
-        KIS=data["KIS"],
-        User=data["User"],
-        Unit=data["Unit"],
-        Dates=datetime.strptime(data["Dates"], "%d-%m-%Y").date(),
-        Status=data["Status"],
-    )
-    db_session.add(add_data)
-    db_session.commit()
+    try:
+        add_data = Assets(
+            Nama=data["Nama"],
+            Desc=data["Desc"],
+            ID=data["ID"],
+            Searial_Num=data["Searial_Num"],
+            Lokasi=data["Lokasi"],
+            Category=data["Category"],
+            OS=data["OS"],
+            WIN_KEY=data["WIN_KEY"],
+            CPU=data["CPU"],
+            RAM=data["RAM"],
+            SSD=data["SSD"],
+            HDD=data["HDD"],
+            Mobo=data["Mobo"],
+            IP=data["IP"],
+            KIS=data["KIS"],
+            User=data["User"],
+            Unit=data["Unit"],
+            Dates=datetime.strptime(data["Dates"], "%d-%m-%Y").date(),
+            Status=data["Status"],
+        )
+        if add_data.KIS != '':
+            antv_updates(add_data.KIS)
+        else:
+            add_data.KIS = None
+        db_session.add(add_data)
+        db_session.commit()
+    except Exception as e:
+        print(e)
+        db_session.rollback()
+        return {"Status" : "Error Update"}
     # add new asset into Maintenance schedule
-    add_maintenance({"id": data["ID"], "Note": ""})
+    # antv_updates(add_data.KIS)
 
 
 # edit inventory
 def update_inv(data, data_ids):
     stmt = update(Assets).where(Assets.ID == data_ids).values(**data)
-    db_session.execute(stmt)
-    db_session.commit()
+    try:
+        if data['ID'] != data_ids:
+            #data['ID'] adalah data id baru
+            #data_ids adalah data id lama ini dari link
+            update_schedule([data_ids, data['ID']])
+        KIS_ID = db_session.query(Assets).where(Assets.ID == data['ID']).first().KIS
+        if KIS_ID != data['KIS']:
+            antv_updates(data['KIS'])
+
+        db_session.execute(stmt)
+        db_session.commit()
+        return {"Status" : "Success"}
+    except Exception as e:
+        db_session.rollback()
+        return {"Status" : "Error Update"}
 
 
 # delete data inventory

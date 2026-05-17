@@ -46,7 +46,7 @@ class Assets(Base):
     HDD = Column(String(25))
     Mobo = Column(String(250))
     IP = Column(String(100))
-    KIS = Column(String(250))
+    KIS = Column(Integer,nullable=True)
     User = Column(String(250))
     Unit = Column(String(250))
     Dates = Column(Date)
@@ -57,23 +57,10 @@ class Assets(Base):
         cascade="all, delete-orphan",  # remove children on delete
         passive_deletes=True,
     )
-    Antivirus = relationship(
-        "Antivirus",
-        back_populates="asset",
-        cascade="all, delete-orphan",  # remove children on delete
-        passive_deletes=True,
-    )
     Software = relationship(
         "Software",
         back_populates="asset",
         cascade="all, delete-orphan",  # remove children on delete
-        passive_deletes=True,
-    )
-    Note = relationship(
-        "Note",
-        back_populates="asset",
-        # uselist=False,
-        cascade="all, delete-orphan",
         passive_deletes=True,
     )
 
@@ -81,14 +68,11 @@ class Assets(Base):
 # Model for Antivrus
 class Antivirus(Base):
     __tablename__ = "Antivirus"
-
     Antivirus_id = Column(Integer, primary_key=True, nullable=False)
-    Owner_id = Column(
-        String(255), ForeignKey("asset.ID", ondelete="CASCADE", onupdate="CASCADE")
-    )
+    Jumlah_User = Column(Integer(), nullable=True)
     KEY = Column(String(250), nullable=False)
     KIS_date = Column(DateTime)
-    asset = relationship("Assets", back_populates="Antivirus")
+    # asset = relationship("Assets", back_populates="Antivirus")
 
 
 # Model for Documents
@@ -117,17 +101,3 @@ class Software(Base):
     Software_username = Column(String(250), nullable=False)
     Software_passwd = Column(String(250), nullable=False)
     asset = relationship("Assets", back_populates="Software")
-
-
-# Model for note or text
-class Note(Base):
-    __tablename__ = "note"
-    Note_id = Column(Integer, primary_key=True, nullable=False)
-    Owner_id = Column(
-        String(255),
-        ForeignKey("asset.ID", ondelete="CASCADE", onupdate="CASCADE"),
-        unique=True,
-    )
-    Last_Maintenance = Column(Date, nullable=False, default=datetime.now)
-    Notes = Column(Text)
-    asset = relationship("Assets", back_populates="Note")

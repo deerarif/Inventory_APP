@@ -1,9 +1,22 @@
 import axios from "axios";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 const url = import.meta.env.VITE_URL;
 
 function ADDNEWDEVICE() {
   const navigate = useNavigate();
+  const [Antivirus_list, setAntivirus_list] = useState({});
+  async function get_antivirus(params) {
+    try {
+      const res = await axios.get(url + "/API/antv");
+      if (res.data.Status === 'Success'){
+        setAntivirus_list(res.data.Data)
+      }
+    }catch(err) {
+      alert("Failed get Antivirus Data");
+      console.log(err);
+    }
+  }
 
   async function add_inventory(data_form) {
     try {
@@ -52,7 +65,13 @@ function ADDNEWDEVICE() {
       Form_data[data_name] = e.target.value;
     }
   };
+  useEffect(() => {
+    // This code runs ONLY once, after the first render
+    get_antivirus();
 
+    // Optional: Return a cleanup function
+    return () => setAntivirus_list({});
+  }, []);
   return (
     <>
       <div className="absolute inset-0 max-sm:relative text-[0.8rem] text-neutral-50 font-mono font-medium flex justify-center max-sm:min-h-screen">
@@ -198,12 +217,27 @@ function ADDNEWDEVICE() {
                     <option value="Lain-Lain">Lain-Lain</option>
                   </select>
 
-                  <input
+                  <select
+                    id="KIS"
+                    className="block w-full bg-gray-700/50 px-3 max-sm:px-2 font-light h-10 max-sm:h-12 hover:bg-gray-700/60 focus:outline-0 focus:ring-0 text-sm max-sm:text-base rounded-sm shadow-xs"
+                    onChange={(e) => handleInput(e, "KIS")}
+                  >
+                    <option value="">KIS CODE</option>
+
+                    {Antivirus_list &&
+                      Object.keys(Antivirus_list).map((key) => (
+                        <option key={key} value={key}>
+                          {Antivirus_list[key]}
+                        </option>
+                      ))}
+                  </select>
+
+                  {/* <input
                     type="text"
                     placeholder="KIS Code"
                     className="bg-gray-700/50 px-3 max-sm:px-2 font-light h-10 max-sm:h-12 rounded-sm hover:bg-gray-600 focus:outline-0 focus:ring-0 max-sm:text-base"
                     onChange={(e) => handleInput(e, "KIS")}
-                  />
+                  /> */}
 
                   <input
                     type="text"
